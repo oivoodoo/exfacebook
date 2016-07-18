@@ -20,6 +20,7 @@ If [available in Hex](https://hex.pm/docs/publish), the package can be installed
 
 ## TODO:
 
+- [ ] wrap api by GenServer for put operations as cast and get as call
 - [ ] add test for get_connections
 - [ ] add test for next_page
 - [ ] add test for prev_page
