@@ -20,6 +20,9 @@ If [available in Hex](https://hex.pm/docs/publish), the package can be installed
 
 ## TODO:
 
+- [ ] add test for get_connections
+- [ ] add test for next_page
+- [ ] add test for prev_page
 - [ ] batch
 - [ ] realtime updates subscribe, list_subscriptions, unsubscribe, meet_challenge
 - [ ] put_*
