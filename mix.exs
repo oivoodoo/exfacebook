@@ -7,6 +7,9 @@ defmodule Exfacebook.Mixfile do
      elixir: "~> 1.2",
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
+     preferred_cli_env: [
+       vcr: :test, "vcr.delete": :test, "vcr.check": :test, "vcr.show": :test
+     ],
      deps: deps]
   end
 
@@ -36,7 +39,8 @@ defmodule Exfacebook.Mixfile do
       {:poison, "~> 1.5"},
       {:mix_test_watch, "~> 0.2", only: :dev},
       {:dogma, "~> 0.1", only: [:dev, :test]},
-      {:ex_unit_notifier, "~> 0.1", only: :test}
+      {:ex_unit_notifier, "~> 0.1", only: :test},
+      {:exvcr, "~> 0.7", only: :test},
     ]
   end
 end

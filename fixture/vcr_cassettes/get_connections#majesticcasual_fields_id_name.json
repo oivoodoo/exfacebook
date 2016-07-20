@@ -1,0 +1,38 @@
+[
+  {
+    "request": {
+      "body": "",
+      "headers": [],
+      "method": "get",
+      "options": {
+        "recv_timeout": "infinity",
+        "connect_timeout": 10000,
+        "timeout": 10000,
+        "pool": false
+      },
+      "request_body": "",
+      "url": "https://graph.facebook.com/v2.6/majesticcasual/feed?access_token=EAAHHZBahuow0BADcvfiryoKrP96OCCRdnZAZBvj89qiFsRMvWqLlkqooqFbkPbZApTb2B7KjNMAgihPRZC6oP3k65nNQEI1nzRkY0dEgTuSzoNdyggc8zS3ZAjGnInB6UdlcwCIYR8v6zgAaZBObJ3UZCvN8ZAy8SkRFq5x1t4mwog3wOO07NIg1z&fields=id%2cname&limit=25"
+    },
+    "response": {
+      "body": "{\"error\":{\"message\":\"Unsupported get request. Object with ID 'majesticcasual' does not exist, cannot be loaded due to missing permissions, or does not support this operation. Please read the Graph API documentation at https:\\/\\/developers.facebook.com\\/docs\\/graph-api\",\"type\":\"GraphMethodException\",\"code\":100,\"fbtrace_id\":\"G\\/JC03NJvFp\"}}",
+      "headers": {
+        "WWW-Authenticate": "OAuth \"Facebook Platform\" \"invalid_request\" \"Unsupported get request. Object with ID 'majesticcasual' does not exist, cannot be loaded due to missing permissions, or does not support this operation. Please read the Graph API documentation at https://developers.facebook.com/docs/graph-api\"",
+        "Access-Control-Allow-Origin": "*",
+        "Pragma": "no-cache",
+        "Cache-Control": "no-store",
+        "facebook-api-version": "v2.6",
+        "Expires": "Sat, 01 Jan 2000 00:00:00 GMT",
+        "Content-Type": "text/javascript; charset=UTF-8",
+        "x-fb-trace-id": "G/JC03NJvFp",
+        "x-fb-rev": "2455660",
+        "Vary": "Accept-Encoding",
+        "X-FB-Debug": "k7+/xeszxu8vXIFUUOadqwcluE06muI/d8lTdmEh5hevgF3LTqeViWBtOvhseDRVujrQ0Ci6qhSJLrgBzNotoQ==",
+        "Date": "Wed, 20 Jul 2016 12:36:44 GMT",
+        "Transfer-Encoding": "chunked",
+        "Connection": "keep-alive"
+      },
+      "status_code": 400,
+      "type": "ok"
+    }
+  }
+]
