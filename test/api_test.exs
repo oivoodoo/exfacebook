@@ -3,6 +3,7 @@ defmodule ApiTest do
   use ExVCR.Mock, adapter: ExVCR.Adapter.Hackney
 
   alias Exfacebook.Api
+  alias Exfacebook.Params
 
   setup_all do
     ExVCR.Config.cassette_library_dir("fixture/vcr_cassettes")
@@ -15,7 +16,7 @@ defmodule ApiTest do
 
   test "get_object for facebook" do
     use_cassette "get_object#me_fields_id_name" do
-      params = %Api.Params{access_token: @access_token, fields: "id,name"}
+      params = %Params{access_token: @access_token, fields: "id,name"}
       {:ok, %{"id" => id, "name" => name}} = Api.get_object(:me, params)
       assert id == "115609768877496"
       assert name == "Bob Alabhedbjacaa Carrieroman"
@@ -24,7 +25,7 @@ defmodule ApiTest do
 
   test "get_connections for authenticated user for feed" do
     use_cassette "get_connections#me_fields_id_name" do
-      params = %Api.Params{access_token: @access_token, fields: "id,name"}
+      params = %Params{access_token: @access_token, fields: "id,name"}
       {:ok, %{"data" => collection}} = Api.get_connections("me", :feed, params)
       assert Enum.count(collection) == 0
     end
@@ -40,7 +41,7 @@ defmodule ApiTest do
     #    access_token.
     # 4. +app_id, +app_secret, -access_token should encrypt app_id|app_secret
     use_cassette "get_connections#majesticcasual_fields_id_name" do
-      params = %Api.Params{access_token: @access_token, fields: "id,name"}
+      params = %Params{access_token: @access_token, fields: "id,name"}
       {:ok, %{"data" => collection}} = Api.get_connections("majesticcasual", :feed, params)
       assert Enum.count(collection) == 0
     end

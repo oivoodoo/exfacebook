@@ -4,27 +4,17 @@ defmodule Exfacebook.Api do
 
   alias Exfacebook.Http
   alias Exfacebook.Config
+  alias Exfacebook.Params
+  alias Exfacebook.Error
 
   @moduledoc ~S"""
   Basic functions for accessing Facebook API.
   """
 
-  defmodule Params do
-    @moduledoc ~S"""
-    Facebook allowed to pass specific params in API requests
-
-      * limit - `25` value is default
-      * access_token - should be encrypted in case of using in requests for
-      authenticated users
-      * fields - specify fields to return in response, example: `"id, name"`
-    """
-    defstruct limit: 25, access_token: nil, fields: ""
-  end
-
-
   @doc """
   Use get_connections to read feed, home collections.
   """
+  @spec get_connections(string, string | binary, Params.t) :: {:ok, Map.t} | {:error, Error.t}
   def get_connections(id, name, params), do: _request(id, name, params)
 
 
@@ -37,18 +27,21 @@ defmodule Exfacebook.Api do
       page1 = page0 |> next_page
       page0 = page1 |> prev_page
   """
+  @spec next_page({:ok, Map.t} | {:error, Error.t}) :: {:ok, Map.t} | {:error, Error.t}
   def next_page({:error, _error} = state), do: state
   def next_page({:ok, %{"paging" => %{"next" => url}}}), do: _request(url)
   def next_page({:ok, _response}), do: {:ok, %{"data" => []}}
 
 
   @doc false
+  @spec next_page({:ok, Map.t} | {:error, Error.t}) :: {:ok, Map.t} | {:error, Error.t}
   def prev_page({:error, _error} = state), do: state
   def prev_page({:ok, %{"paging" => %{"previous" => url}}}), do: _request(url)
   def prev_page({:ok, _response}), do: {:ok, %{"data" => []}}
 
 
   @doc false
+  @spec get_object(String.t, Params.t) :: {:ok, Map.t} | {:error, Error.t}
   def get_object(id, params), do: _request(id, params)
 
 
