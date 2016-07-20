@@ -9,6 +9,12 @@ if Mix.env == :dev do
   config :mix_test_watch, tasks: ~w(test dogma), clear: true
 end
 
+if Mix.env == :test do
+  config :exfacebook,
+    id: "217873215035447",
+    secret: "4e2d3c9835e99d8dc7c93d62cc16d159"
+end
+
 # This configuration is loaded before any dependency and is restricted
 # to this project. If another project depends on this project, this
 # file won't be loaded nor affect the parent project. For this reason,
