@@ -1,9 +1,9 @@
 defmodule Exfacebook.Api do
   require Poison
+  require Logger
 
   alias Exfacebook.Http
-  alias HTTPoison.Response
-  alias HTTPoison.Error
+  alias Exfacebook.Config
 
   defmodule Params do
     defstruct limit: 25, access_token: nil, fields: ""
@@ -13,9 +13,7 @@ defmodule Exfacebook.Api do
   @doc """
   Use get_connections to read feed, home collections.
   """
-  def get_connections(params, object_id, object_name) do
-    _request(object_name, object_id, params)
-  end
+  def get_connections(params, object_id, object_name), do: _request(object_name, object_id, params)
 
 
   def next_page({:error, _error} = state), do: state
@@ -28,15 +26,10 @@ defmodule Exfacebook.Api do
   def prev_page({:ok, _response}), do: {:ok, %{"data" => []}}
 
 
-  def get_object(params, object_id) do
-    _request(object_id, params)
-  end
+  def get_object(params, object_id), do: _request(object_id, params)
 
 
-  defp _request(object_id, params) do
-    url = _make_url(object_id, params)
-    _request(url)
-  end
+  defp _request(object_id, params), do: _make_url(object_id, params) |> _request
   defp _request(object_name, object_id, params), do: _request(~s(#{object_id}/#{object_name}), params)
   defp _request(url), do: Http.get(url)
 
@@ -46,9 +39,9 @@ defmodule Exfacebook.Api do
   end
 
 
-  defp _make_url(path, %Params{access_token: _access_token} = params) do
+  defp _make_url(path, params) do
     params = params |> Map.delete(:__struct__) |> Map.to_list
-    :hackney_url.make_url("https://graph.facebook.com", "#{@api_version}/#{path}", params)
+    :hackney_url.make_url("https://graph.facebook.com", "#{Config.api_version}/#{path}", params)
   end
 
 

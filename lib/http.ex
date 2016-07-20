@@ -4,17 +4,25 @@ defmodule Exfacebook.Http do
   alias HTTPoison.Response
   alias HTTPoison.Error
 
-  @http_options [recv_timeout: :infinity, timeout: 10000, hackney: [timeout: 10000, pool: false]]
+  @http_options Application.get_env(:exfacebook,
+    :http_options,
+    [recv_timeout: :infinity, timeout: 10000, hackney: [timeout: 10000, pool: false]]
+  )
+
+  defmodule HttpError do
+    @enforce_keys [:message]
+    defstruct status: nil, message: nil
+  end
 
   def get(url) do
     case HTTPoison.get(url, [], @http_options) do
       {:ok, %Response{status_code: 200, body: body}} ->
         case Poison.decode(body) do
           {:ok, _value} = state -> state
-          error -> {:error, error}
+          error -> {:error, %HttpError{message: inspect(error)}}
         end
-      {:ok, %Response{status_code: 404}} ->
-        {:error, "[Http.get] not found resource"}
+      {:ok, %Response{status_code: status_code}} ->
+        {:error, %HttpError{status: status_code, message: "not found resource"}}
       {:error, %Error{reason: reason}} ->
         {:error, "[Http.get] #{reason}"}
       _ ->

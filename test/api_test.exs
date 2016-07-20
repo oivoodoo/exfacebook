@@ -1,26 +1,27 @@
 defmodule ApiTest do
   use ExUnit.Case
-  doctest Exfacebook.Api
 
-  alias Exfacebook.Api, as: Facebook
+  alias Exfacebook.Api
 
-  @url "https://graph.facebook.com/majesticcasual/posts?fields=id,name,picture,description,link,from,created_time,application,comments.limit(1).summary(true),to,likes.limit(1).summary(true)&access_token=199502190383212|9ae024603797bbcd31d938feba4cd033"
-  test "get response with json and add one more item to sidekiq" do
-    assert Facebook.id(@url) == "majesticcasual"
+  setup do
+    {:ok, _} = Exfacebook.start_link(name: Exfacebook)
+    :ok
   end
 
-  @access_token "access-token"
-  @object_id "object-id"
+  # Lets use access_token of test user that was created for one of the
+  # facebook apps via Dashboard -> Roles -> Test Users
+  @access_token "EAAHHZBahuow0BAIyZB8ZC80SC3ZAoEoFCndktXZAruzVY2ZAMzHEbSkZCFnjqqdIBFpHKDzQRIXMSAFK4HZALZBeh29xZATH5urKw2rtQglw6fFZCd47Y0ixAfcUQlbKh20p50lRI41iIvDasDDiH1KZBrVEvgqgWaSqg041DX4bZCqYd0PxnZBsiJm58F"
+  @object_id "majesticcasual"
 
   test "get_object for facebook" do
-    params = %Facebook.Params{access_token: @access_token, fields: "id,name"}
-    {:ok, %{"id" => id}} = Facebook.get_object(@object_id, params)
+    params = %Api.Params{access_token: @access_token, fields: "id,name"}
+    {:ok, %{"id" => id}} = Api.get_object(@object_id, params)
     assert id == "1264937113"
   end
 
-  test "get_connections for facebook" do
-    params = %Facebook.Params{access_token: @access_token, fields: "id,name"}
-    {:ok, %{"data" => collection}} = Facebook.get_connections(@object_id, :feed, params)
-    assert Enum.count(collection) == 25
-  end
+  # test "get_connections for facebook" do
+  #   params = %Api.Params{access_token: @access_token, fields: "id,name"}
+  #   {:ok, %{"data" => collection}} = Api.get_connections(@object_id, :feed, params)
+  #   assert Enum.count(collection) == 25
+  # end
 end
