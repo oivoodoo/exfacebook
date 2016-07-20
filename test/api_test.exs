@@ -38,4 +38,24 @@ defmodule ApiTest do
       assert Enum.count(collection) == 25
     end
   end
+
+  test "next and prev page for get_connections request" do
+    use_cassette "get_connections#majesticcasual_fields_id_name" do
+      response1 = Api.get_connections("majesticcasual", :posts, %Params{fields: "id,name"})
+
+      use_cassette "get_connections#majesticcasual_fields_id_name_next_page1" do
+        response2 = response1 |> Api.next_page
+        {:ok, %{"data" => [item1 | _]}} = response1
+        {:ok, %{"data" => [item2 | _]}} = response2
+        assert item1["id"] != item2["id"]
+
+        use_cassette "get_connections#majesticcasual_fields_id_name_prev_page1" do
+          response3 = response2 |> Api.prev_page
+          {:ok, %{"data" => [item3 | _]}} = response3
+          assert item1["id"] == item3["id"]
+        end
+      end
+    end
+
+  end
 end
