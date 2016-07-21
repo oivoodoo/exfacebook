@@ -6,6 +6,7 @@ defmodule Exfacebook.Mixfile do
      version: "0.0.1",
      elixir: "~> 1.2",
      description: description,
+     package: package,
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
      preferred_cli_env: [
@@ -18,6 +19,14 @@ defmodule Exfacebook.Mixfile do
     """
     Facebook API
     """
+  end
+
+  defp package do
+    [maintainers: ["Alexandr Korsak"],
+     licenses: ["Apache 2.0"],
+     links: %{"GitHub" => "https://github.com/oivoodoo/exfacebook"},
+     files: ~w(mix.exs README.md lib) ++
+            ~w(test)]
   end
 
   # Configuration for the OTP application
