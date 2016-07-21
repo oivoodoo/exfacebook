@@ -5,12 +5,19 @@ defmodule Exfacebook.Mixfile do
     [app: :exfacebook,
      version: "0.0.1",
      elixir: "~> 1.2",
+     description: description,
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
      preferred_cli_env: [
        vcr: :test, "vcr.delete": :test, "vcr.check": :test, "vcr.show": :test
      ],
      deps: deps]
+  end
+
+  defp description do
+    """
+    Facebook API
+    """
   end
 
   # Configuration for the OTP application
