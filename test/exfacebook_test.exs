@@ -2,7 +2,6 @@ defmodule ExfacebookTest do
   use ExUnit.Case, async: false
   use ExVCR.Mock, adapter: ExVCR.Adapter.Hackney
 
-  alias Exfacebook.Api
   alias Exfacebook.Params
 
   setup_all do
