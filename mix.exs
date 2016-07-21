@@ -57,6 +57,7 @@ defmodule Exfacebook.Mixfile do
       {:dogma, "~> 0.1", only: [:dev, :test]},
       {:ex_unit_notifier, "~> 0.1", only: :test},
       {:exvcr, "~> 0.7", only: :test},
+      {:ex_doc, ">= 0.0.0", only: :dev},
     ]
   end
 end
