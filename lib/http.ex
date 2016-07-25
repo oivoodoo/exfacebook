@@ -21,9 +21,18 @@ defmodule Exfacebook.Http do
   """
   @spec get(String) :: {:ok, Map.t} | {:error, Error.t}
   def get(url) do
-    Logger.info inspect(url)
+    HTTPoison.get(url, [], @http_options) |> handle_error
+  end
 
-    case HTTPoison.get(url, [], @http_options) do
+
+  @spec post(String, Map.t) :: {:ok, Map.t} | {:error, Error.t}
+  def post(url, data) do
+    HTTPoison.post(url, {:form, data}, ["Content-Type": "application/x-www-form-urlencoded"], @http_options) |> handle_error
+  end
+
+
+  def handle_error(response) do
+    case response do
       {:ok, %Response{status_code: 200, body: body}} ->
         case Poison.decode(body) do
           {:ok, _value} = state -> state
