@@ -23,13 +23,15 @@ If [available in Hex](https://hex.pm/docs/publish), the package can be installed
 
 
 ```
-    alias %Exfacebook.Params
+    alias Exfacebook.Params
 
     {:ok, pid} = Exfacebook.start_link
 
     {:ok, attributes} = Exfacebook.get_object(pid, :me, %Params{access_token: "access-token"})
 
-    {:ok, %{"data" => collection}} = Exfacebook.get_connections(pid, :feed, %Params{fields: "id, name", access_token: "access-token"})
+    {:ok, %{"data" => collection}} = response = Exfacebook.get_connections(pid, :feed, %Params{fields: "id, name", access_token: "access-token"})
+
+    {:ok, %{"data" => collection2}} = Exfacebook.next_page(pid, response)
 
     [{:ok, %{"data" => collection}}, {:ok, %{"id" => id, "name" => name}}] = Exfacebook.batch(%Params{access_token: "access-token"}, fn(api) ->
       api = api |> Exfacebook.get_object(pid, :me, %Params{fields: "id, name"})
@@ -37,6 +39,12 @@ If [available in Hex](https://hex.pm/docs/publish), the package can be installed
       api
     end)
 
+
+```
+
+
+```
+    {:ok, attributes} = Exfacebook.Api.get_object(:me, %Params{access_token: "access-token"})
 ```
 
 ## TODO:
@@ -45,6 +53,7 @@ If [available in Hex](https://hex.pm/docs/publish), the package can be installed
 - [+] add test for next_page
 - [+] add test for prev_page
 - [+] batch api for get_object and get_connections
+- [ ] replace api by batch_requests
 - [ ] batch api for put_*
 - [ ] realtime updates subscribe, list_subscriptions, unsubscribe, meet_challenge
 - [ ] put_*
