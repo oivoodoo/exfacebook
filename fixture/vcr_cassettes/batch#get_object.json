@@ -1,0 +1,39 @@
+[
+  {
+    "request": {
+      "body": "batch=%5b%7b%22relative_url%22%3a%22%2fv2.6%2fme%3ffields%3did%252c%2bname%22%2c%22method%22%3a%22GET%22%7d%5d&access_token=EAADGJ4ZBWmDcBABPltXmttznlPfbpHP4nQKq8fAN3fRgNKuxIDg3H6BtazfVNVwZBoqXHFWqAufYGOTJhkPQOqJSU7HciReZBtiwTj9BM0CyeO7ZCrkPQpsVcYZC3tDZCh30MYfUGJGqSVo8rubaToVXExyljU3Jn20l7ZAlGmcfreYnNUsu0TU",
+      "headers": {
+        "Content-Type": "application/x-www-form-urlencoded"
+      },
+      "method": "post",
+      "options": {
+        "recv_timeout": "infinity",
+        "connect_timeout": 10000,
+        "timeout": 10000,
+        "pool": false
+      },
+      "request_body": "",
+      "url": "https://graph.facebook.com"
+    },
+    "response": {
+      "body": "[{\"code\":200,\"headers\":[{\"name\":\"Access-Control-Allow-Origin\",\"value\":\"*\"},{\"name\":\"Expires\",\"value\":\"Sat, 01 Jan 2000 00:00:00 GMT\"},{\"name\":\"Content-Type\",\"value\":\"text\\/javascript; charset=UTF-8\"},{\"name\":\"Facebook-API-Version\",\"value\":\"v2.6\"},{\"name\":\"Cache-Control\",\"value\":\"private, no-cache, no-store, must-revalidate\"},{\"name\":\"Vary\",\"value\":\"Accept-Encoding\"},{\"name\":\"Pragma\",\"value\":\"no-cache\"},{\"name\":\"ETag\",\"value\":\"\\\"087965e62e668b0c7ebe42063559d53935e9b9ea\\\"\"}],\"body\":\"{\\\"id\\\":\\\"127016687734698\\\",\\\"name\\\":\\\"Richard Alabgiajbgak Thurnman\\\"}\"}]",
+      "headers": {
+        "Access-Control-Allow-Origin": "*",
+        "Pragma": "no-cache",
+        "Cache-Control": "private, no-cache, no-store, must-revalidate",
+        "facebook-api-version": "v2.0",
+        "Expires": "Sat, 01 Jan 2000 00:00:00 GMT",
+        "Content-Type": "text/javascript; charset=UTF-8",
+        "x-fb-trace-id": "BB+lr+Tppa0",
+        "x-fb-rev": "2464065",
+        "Vary": "Accept-Encoding",
+        "X-FB-Debug": "wTMyEmSLD9s3LKv0JGxdd6xpx6twc4Ati1BRerPdvaA8PmmZTa/YXbPuFdgJ61iO6v/6/+4Rhfmhr8PBqDpW8Q==",
+        "Date": "Mon, 25 Jul 2016 14:18:11 GMT",
+        "Transfer-Encoding": "chunked",
+        "Connection": "keep-alive"
+      },
+      "status_code": 200,
+      "type": "ok"
+    }
+  }
+]

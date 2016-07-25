@@ -1,0 +1,5 @@
+defmodule Exfacebook.TestConfig do
+  def access_token do
+    "EAADGJ4ZBWmDcBABPltXmttznlPfbpHP4nQKq8fAN3fRgNKuxIDg3H6BtazfVNVwZBoqXHFWqAufYGOTJhkPQOqJSU7HciReZBtiwTj9BM0CyeO7ZCrkPQpsVcYZC3tDZCh30MYfUGJGqSVo8rubaToVXExyljU3Jn20l7ZAlGmcfreYnNUsu0TU"
+  end
+end
