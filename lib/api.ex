@@ -52,12 +52,28 @@ defmodule Exfacebook.Api do
   def next_page({:ok, %{"paging" => %{"next" => url}}}), do: _request(url)
   def next_page({:ok, _response}), do: {:ok, %{"data" => []}}
 
+  @spec next_page(api, success | error) :: success | error
+  def next_page(api, {:error, _error} = state), do: api
+  def next_page(api, {:ok, %{"paging" => %{"next" => url}}}) do
+    url = String.replace(url, "https://graph.facebook.com", "")
+    api ++ [%{"method" => "GET", "relative_url" => url}]
+  end
+  def next_page(api, {:ok, _response}), do: api
+
 
   @doc false
   @spec prev_page(success | error) :: success | error
   def prev_page({:error, _error} = state), do: state
   def prev_page({:ok, %{"paging" => %{"previous" => url}}}), do: _request(url)
   def prev_page({:ok, _response}), do: {:ok, %{"data" => []}}
+
+  @spec prev_page(api, success | error) :: success | error
+  def prev_page(api, {:error, _error} = state), do: api
+  def prev_page(api, {:ok, %{"paging" => %{"previous" => url}}}) do
+    url = String.replace(url, "https://graph.facebook.com", "")
+    api ++ [%{"method" => "GET", "relative_url" => url}]
+  end
+  def prev_page(api, {:ok, _response}), do: api
 
 
   @doc false

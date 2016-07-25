@@ -25,16 +25,8 @@ defmodule Exfacebook do
 
   define_api :get_object, :get, [id, params]
   define_api :get_connections, :get, [id, name, params]
-
-  # def get_object(pid, id, params), do: GenServer.call(pid, {:get_object, id, params})
-  # def get_connections(pid, id, name, params), do: GenServer.call(pid, {:get_connections, id, name, params})
-  # def next_page(pid, response), do: GenServer.call(pid, {:next_page, response})
-  # def prev_page(pid, response), do: GenServer.call(pid, {:prev_page, response})
-  #
-  # def get_object(collector, pid, id, params), do: GenServer.call(pid, {:get_object, id, params})
-  # def get_connections(collector, pid, id, name, params), do: GenServer.call(pid, {:get_connections, id, name, params})
-  # def next_page(collector, pid, response), do: GenServer.call(pid, {:next_page, response})
-  # def prev_page(collector, pid, response), do: GenServer.call(pid, {:prev_page, response})
+  define_api :next_page, :get, [response]
+  define_api :prev_page, :get, [response]
 
   @doc ~S"""
   Passing prepared params for batch processing using Facebook API.
