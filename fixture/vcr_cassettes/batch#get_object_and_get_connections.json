@@ -1,7 +1,7 @@
 [
   {
     "request": {
-      "body": "batch=%5b%7b%22relative_url%22%3a%22%2fv2.6%2fme%3ffields%3did%252c%2bname%22%2c%22method%22%3a%22GET%22%7d%2c%7b%22relative_url%22%3a%22%2fv2.6%2fme%2ffeed%3ffields%3did%252c%2bname%26limit%3d25%22%2c%22method%22%3a%22GET%22%7d%5d&access_token=EAADGJ4ZBWmDcBABPltXmttznlPfbpHP4nQKq8fAN3fRgNKuxIDg3H6BtazfVNVwZBoqXHFWqAufYGOTJhkPQOqJSU7HciReZBtiwTj9BM0CyeO7ZCrkPQpsVcYZC3tDZCh30MYfUGJGqSVo8rubaToVXExyljU3Jn20l7ZAlGmcfreYnNUsu0TU",
+      "body": "batch=%5b%7b%22relative_url%22%3a%22%2fv2.6%2fme%3ffields%3did%252c%2bname%22%2c%22method%22%3a%22GET%22%7d%2c%7b%22relative_url%22%3a%22%2fv2.6%2fme%2ffeed%3ffields%3did%252c%2bname%26limit%3d25%22%2c%22method%22%3a%22GET%22%7d%5d&access_token=EAADGJ4ZBWmDcBACzVsZAsr4EZCCJYdyXTkZCZCiNodRFWvQ01HXmHLuOMpHYSZARkvnDZBSdmUs1KLLpOm6QDdjMculdZBqAMQniM6dGfe1DJ2LJ6dC1fI4AB6iuhUowSzVwCmKpv9SWdjf9h5zHf3WwINKc4RChFgmyToJRZC63YKyP96WQoB67V",
       "headers": {
         "Content-Type": "application/x-www-form-urlencoded"
       },
@@ -24,11 +24,11 @@
         "facebook-api-version": "v2.0",
         "Expires": "Sat, 01 Jan 2000 00:00:00 GMT",
         "Content-Type": "text/javascript; charset=UTF-8",
-        "x-fb-trace-id": "BEbBFUw/Pae",
-        "x-fb-rev": "2464065",
+        "x-fb-trace-id": "FNmAfIQ8gUH",
+        "x-fb-rev": "2464313",
         "Vary": "Accept-Encoding",
-        "X-FB-Debug": "GBuwO6Xht/HCycfVtBDroWbyFHxPLJJGrqYQdJ0eUf4k7D9TOvUK3ej5jKV03kNYo77cUAFgRKfywddAf97w3Q==",
-        "Date": "Mon, 25 Jul 2016 14:18:11 GMT",
+        "X-FB-Debug": "QnRtBp/z0SsWpqKhSxd8oFxV08OeM3wO/2jesZpfHoHvKNfJdrg1/Al1DdpNLVn9Zi3k92AIGU89jhVi2Q9wqw==",
+        "Date": "Mon, 25 Jul 2016 20:04:36 GMT",
         "Transfer-Encoding": "chunked",
         "Connection": "keep-alive"
       },

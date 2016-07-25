@@ -1,0 +1,37 @@
+[
+  {
+    "request": {
+      "body": "",
+      "headers": [],
+      "method": "get",
+      "options": {
+        "recv_timeout": "infinity",
+        "connect_timeout": 10000,
+        "timeout": 10000,
+        "pool": false
+      },
+      "request_body": "",
+      "url": "https://graph.facebook.com/v2.6/me/feed?access_token=EAADGJ4ZBWmDcBACzVsZAsr4EZCCJYdyXTkZCZCiNodRFWvQ01HXmHLuOMpHYSZARkvnDZBSdmUs1KLLpOm6QDdjMculdZBqAMQniM6dGfe1DJ2LJ6dC1fI4AB6iuhUowSzVwCmKpv9SWdjf9h5zHf3WwINKc4RChFgmyToJRZC63YKyP96WQoB67V&appsecret_proof=4270841b64fed6173f26e0e9f3a5ad0038a007df791326f6ab45c78ef6aa8eee&fields=id%2cname&limit=25"
+    },
+    "response": {
+      "body": "{\"data\":[]}",
+      "headers": {
+        "Access-Control-Allow-Origin": "*",
+        "ETag": "\"1050253aec7b29caff644806927dabfa81406eee\"",
+        "Pragma": "no-cache",
+        "Cache-Control": "private, no-cache, no-store, must-revalidate",
+        "facebook-api-version": "v2.6",
+        "Expires": "Sat, 01 Jan 2000 00:00:00 GMT",
+        "Content-Type": "text/javascript; charset=UTF-8",
+        "x-fb-trace-id": "AYoWK4Qf7ce",
+        "x-fb-rev": "2464313",
+        "X-FB-Debug": "wIEvUVCpepx3yWSMQdEahHN3+JEnxg6hGCqnGzpyrxjJ27CluM/Q6qH6moJLXV5363mCvRuG0FxTzjWWyy9K9g==",
+        "Date": "Mon, 25 Jul 2016 20:04:33 GMT",
+        "Connection": "keep-alive",
+        "Content-Length": "11"
+      },
+      "status_code": 200,
+      "type": "ok"
+    }
+  }
+]

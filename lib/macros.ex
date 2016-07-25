@@ -32,7 +32,7 @@ defmodule Exfacebook.Macros do
 
         def handle_call({unquote(:"#{function_name}"), unquote_splicing(arguments)}, _from, state) do
           {:reply,
-           apply(Exfacebook.Api, unquote(function_name), unquote_splicing(arguments)),
+           apply(Exfacebook.Api, unquote(function_name), [unquote_splicing(arguments)]),
            state}
         end
 
