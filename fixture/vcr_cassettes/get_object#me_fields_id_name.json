@@ -11,7 +11,7 @@
         "pool": false
       },
       "request_body": "",
-      "url": "https://graph.facebook.com/v2.6/me?access_token=EAADGJ4ZBWmDcBACzVsZAsr4EZCCJYdyXTkZCZCiNodRFWvQ01HXmHLuOMpHYSZARkvnDZBSdmUs1KLLpOm6QDdjMculdZBqAMQniM6dGfe1DJ2LJ6dC1fI4AB6iuhUowSzVwCmKpv9SWdjf9h5zHf3WwINKc4RChFgmyToJRZC63YKyP96WQoB67V&appsecret_proof=4270841b64fed6173f26e0e9f3a5ad0038a007df791326f6ab45c78ef6aa8eee&fields=id%2cname"
+      "url": "https://graph.facebook.com/v2.6/me?access_token=EAADGJ4ZBWmDcBANTjhM8cqaEUAgSUWMe6tRjfEBy740jS0n18keIUzAAll4dRok5oDb6ZBAOYchcTuVXNV5hFpi3vSUhSttEBcmDod58qMZCcVvmtKqYNCzMZBjZB7aPKkzDuoWrBORI6Uig3Mtk27OsHzAdmiwHeq29b97c3MdFkHNBrkPZBf&appsecret_proof=47459024ebc5ed19710bbddb16a2d1030587b3179081330858cad574f2cd4651&fields=id%2cname"
     },
     "response": {
       "body": "{\"id\":\"127016687734698\",\"name\":\"Richard Alabgiajbgak Thurnman\"}",
@@ -23,10 +23,10 @@
         "facebook-api-version": "v2.6",
         "Expires": "Sat, 01 Jan 2000 00:00:00 GMT",
         "Content-Type": "text/javascript; charset=UTF-8",
-        "x-fb-trace-id": "CpISRiJibyU",
-        "x-fb-rev": "2464313",
-        "X-FB-Debug": "+RfV0fLTxUHaGElCSci1biMzyajtqNFs5EU4Lea3qnVdCTvA5BECHlgbalX3w2CEGMy7HIFTpkijbHgGIwN6ZA==",
-        "Date": "Mon, 25 Jul 2016 20:04:34 GMT",
+        "x-fb-trace-id": "BZEpg7h4SAe",
+        "x-fb-rev": "2474568",
+        "X-FB-Debug": "4i3lzABPYRUqlwKbX+DlYU4j6KcXKZ/9fDbsS38kt/pVS62wqnndFdKY3+M0zcgizXuibIzGvxNSqWdGUtHlxg==",
+        "Date": "Fri, 29 Jul 2016 19:07:09 GMT",
         "Connection": "keep-alive",
         "Content-Length": "63"
       },

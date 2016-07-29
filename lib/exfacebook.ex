@@ -27,6 +27,7 @@ defmodule Exfacebook do
   define_api :get_connections, :get, [id, name, params]
   define_api :next_page, :get, [response]
   define_api :prev_page, :get, [response]
+  define_api :put_connections, :post, [id, name, params, body]
 
   @doc ~S"""
   Passing prepared params for batch processing using Facebook API.

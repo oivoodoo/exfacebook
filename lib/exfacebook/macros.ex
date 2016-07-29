@@ -38,16 +38,12 @@ defmodule Exfacebook.Macros do
   defp _define_api_resource(function_name, arguments) do
     quote do
       def unquote(:"#{function_name}")(pid, unquote_splicing(arguments)) do
-        require Logger
-        Logger.info "SOMETHING 1"
-
         GenServer.cast(pid, {unquote(function_name), unquote_splicing(arguments)})
       end
 
-      def handle_cast({unquote(:"#{function_name}"), unquote_splicing(arguments)}, state) do
-        require Logger
-        Logger.info "SOMETHING 2 : function: #{unquote(function_name)}"
+      require Logger
 
+      def handle_cast({unquote(:"#{function_name}"), unquote_splicing(arguments)}, state) do
         {:reply,
          apply(Exfacebook.Api, unquote(function_name), [unquote_splicing(arguments)]),
          state}

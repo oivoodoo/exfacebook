@@ -25,7 +25,7 @@ defmodule Exfacebook.Api do
     {:ok, %{"data" => collection}} = get_connections(:me, :feed, %Params{fields: "id, name"})
   """
   @spec get_connections(id, name, Params.t) :: success | error
-  def get_connections(id, name, params), do: _request(id, name, params)
+  def get_connections(id, name, params), do: _get(id, name, params)
 
 
   @doc """
@@ -49,7 +49,7 @@ defmodule Exfacebook.Api do
   """
   @spec next_page(success | error) :: success | error
   def next_page({:error, _error} = state), do: state
-  def next_page({:ok, %{"paging" => %{"next" => url}}}), do: _request(url)
+  def next_page({:ok, %{"paging" => %{"next" => url}}}), do: _get(url)
   def next_page({:ok, _response}), do: {:ok, %{"data" => []}}
 
   @spec next_page(api, success | error) :: success | error
@@ -64,7 +64,7 @@ defmodule Exfacebook.Api do
   @doc false
   @spec prev_page(success | error) :: success | error
   def prev_page({:error, _error} = state), do: state
-  def prev_page({:ok, %{"paging" => %{"previous" => url}}}), do: _request(url)
+  def prev_page({:ok, %{"paging" => %{"previous" => url}}}), do: _get(url)
   def prev_page({:ok, _response}), do: {:ok, %{"data" => []}}
 
   @spec prev_page(api, success | error) :: success | error
@@ -82,8 +82,8 @@ defmodule Exfacebook.Api do
     params = _auth(params)
 
     data = [
-      {"batch", Poison.encode!(data)},
-      {"access_token", params.access_token},
+      batch: Poison.encode!(data),
+      access_token: params.access_token,
     ]
 
     Http.post("https://graph.facebook.com", data) |> _handle_batch
@@ -112,7 +112,7 @@ defmodule Exfacebook.Api do
   @spec get_object(id, Params.t) :: success | error
   def get_object(id, params) do
     params = Map.delete(params, :limit)
-    _request(id, params)
+    _get(id, params)
   end
 
   @doc """
@@ -125,15 +125,31 @@ defmodule Exfacebook.Api do
   end
 
 
+  @spec put_connections(id, name, Params.t) :: success | error
+  def put_connections(id, name, params, body \\ %{}) do
+    params = Map.delete(params, :limit)
+    body = Map.to_list(body)
+    _post(id, name, params, body)
+  end
+
+
   defp _make_url_batch(params, path) do
     path = "#{Config.api_version}/#{path}"
     :hackney_url.make_url("", path, _batch_prepare(params))
   end
 
 
-  defp _request(id, params), do:  id |> _make_url(params) |> _request
-  defp _request(id, name, params), do: _request(~s(#{id}/#{name}), params)
-  defp _request(url), do: Http.get(url)
+  defp _get(id, params), do:  id |> _make_url(params) |> _get
+  defp _get(id, name, params), do: _get(~s(#{id}/#{name}), params)
+  defp _get(url), do: Http.get(url)
+
+  defp _post(id, params, body), do:  id |> _make_url(params) |> _post(body)
+  defp _post(id, name, params, body), do: _post(~s(#{id}/#{name}), params, body)
+  defp _post(url, body)  do
+    Logger.info "_post"
+    Logger.info url
+    Http.post(url, body)
+  end
 
 
   defp _make_url(path, params) do

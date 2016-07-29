@@ -16,22 +16,26 @@ defmodule Exfacebook.Http do
      hackney: [timeout: 10000, pool: false]]
   )
 
+  @form_headers %{"Content-type" => "application/x-www-form-urlencoded"}
+
   @doc """
   Make get request and return JSON response as dictionary.
   """
   @spec get(String) :: {:ok, Map.t} | {:error, Error.t}
   def get(url) do
-    HTTPoison.get(url, [], @http_options) |> handle_error
+    HTTPoison.get(url, [], @http_options) |> _handle_error
   end
-
 
   @spec post(String, Map.t) :: {:ok, Map.t} | {:error, Error.t}
-  def post(url, data) do
-    HTTPoison.post(url, {:form, data}, ["Content-Type": "application/x-www-form-urlencoded"], @http_options) |> handle_error
+  def post(url, data \\ []) do
+    body = []
+    if data != [], do: body = {:form, data}
+    response = HTTPoison.post(url, body, @form_headers, @http_options)
+    Logger.debug "[Facebook.Api.post] response: #{inspect(response)}"
+    response |> _handle_error
   end
 
-
-  def handle_error(response) do
+  defp _handle_error(response) do
     case response do
       {:ok, %Response{status_code: 200, body: body}} ->
         case Poison.decode(body) do

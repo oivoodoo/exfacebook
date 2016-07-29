@@ -47,7 +47,7 @@ defmodule ExfacebookTest do
          assert id1 != id2
 
          use_cassette "get_connections#prev_majesticcasual_fields_id_name" do
-           {:ok, %{"data" => [%{"id" => id3} | _] = collection3}} = response3 = Exfacebook.prev_page(pid, response2)
+           {:ok, %{"data" => [%{"id" => id3} | _] = collection3}} = Exfacebook.prev_page(pid, response2)
            assert Enum.count(collection3) == 25
            assert id1 == id3
          end

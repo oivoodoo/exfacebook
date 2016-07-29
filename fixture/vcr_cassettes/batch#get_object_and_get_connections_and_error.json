@@ -1,9 +1,9 @@
 [
   {
     "request": {
-      "body": "batch=%5b%7b%22relative_url%22%3a%22%2fv2.6%2fme%3ffields%3did%252c%2bname%22%2c%22method%22%3a%22GET%22%7d%2c%7b%22relative_url%22%3a%22%2fv2.6%2funknown-page%2fposts%3ffields%3did%252c%2bname%26limit%3d25%22%2c%22method%22%3a%22GET%22%7d%5d&access_token=EAADGJ4ZBWmDcBACzVsZAsr4EZCCJYdyXTkZCZCiNodRFWvQ01HXmHLuOMpHYSZARkvnDZBSdmUs1KLLpOm6QDdjMculdZBqAMQniM6dGfe1DJ2LJ6dC1fI4AB6iuhUowSzVwCmKpv9SWdjf9h5zHf3WwINKc4RChFgmyToJRZC63YKyP96WQoB67V",
+      "body": "batch=%5b%7b%22relative_url%22%3a%22%2fv2.6%2fme%3ffields%3did%252c%2bname%22%2c%22method%22%3a%22GET%22%7d%2c%7b%22relative_url%22%3a%22%2fv2.6%2funknown-page%2fposts%3ffields%3did%252c%2bname%26limit%3d25%22%2c%22method%22%3a%22GET%22%7d%5d&access_token=EAADGJ4ZBWmDcBANTjhM8cqaEUAgSUWMe6tRjfEBy740jS0n18keIUzAAll4dRok5oDb6ZBAOYchcTuVXNV5hFpi3vSUhSttEBcmDod58qMZCcVvmtKqYNCzMZBjZB7aPKkzDuoWrBORI6Uig3Mtk27OsHzAdmiwHeq29b97c3MdFkHNBrkPZBf",
       "headers": {
-        "Content-Type": "application/x-www-form-urlencoded"
+        "Content-type": "application/x-www-form-urlencoded"
       },
       "method": "post",
       "options": {
@@ -16,7 +16,7 @@
       "url": "https://graph.facebook.com"
     },
     "response": {
-      "body": "[{\"code\":200,\"headers\":[{\"name\":\"Access-Control-Allow-Origin\",\"value\":\"*\"},{\"name\":\"Expires\",\"value\":\"Sat, 01 Jan 2000 00:00:00 GMT\"},{\"name\":\"Content-Type\",\"value\":\"text\\/javascript; charset=UTF-8\"},{\"name\":\"Facebook-API-Version\",\"value\":\"v2.6\"},{\"name\":\"Cache-Control\",\"value\":\"private, no-cache, no-store, must-revalidate\"},{\"name\":\"Vary\",\"value\":\"Accept-Encoding\"},{\"name\":\"Pragma\",\"value\":\"no-cache\"},{\"name\":\"ETag\",\"value\":\"\\\"087965e62e668b0c7ebe42063559d53935e9b9ea\\\"\"}],\"body\":\"{\\\"id\\\":\\\"127016687734698\\\",\\\"name\\\":\\\"Richard Alabgiajbgak Thurnman\\\"}\"},{\"code\":404,\"headers\":[{\"name\":\"Content-Type\",\"value\":\"text\\/javascript; charset=UTF-8\"},{\"name\":\"Facebook-API-Version\",\"value\":\"v2.6\"},{\"name\":\"WWW-Authenticate\",\"value\":\"OAuth \\\"Facebook Platform\\\" \\\"not_found\\\" \\\"(#803) Cannot query users by their username (unknown-page)\\\"\"},{\"name\":\"Expires\",\"value\":\"Sat, 01 Jan 2000 00:00:00 GMT\"},{\"name\":\"Cache-Control\",\"value\":\"no-store\"},{\"name\":\"Vary\",\"value\":\"Accept-Encoding\"},{\"name\":\"Pragma\",\"value\":\"no-cache\"},{\"name\":\"Access-Control-Allow-Origin\",\"value\":\"*\"}],\"body\":\"{\\\"error\\\":{\\\"message\\\":\\\"(#803) Cannot query users by their username (unknown-page)\\\",\\\"type\\\":\\\"OAuthException\\\",\\\"code\\\":803,\\\"fbtrace_id\\\":\\\"FUt8XIyDlTN\\\"}}\"}]",
+      "body": "[{\"code\":200,\"headers\":[{\"name\":\"Access-Control-Allow-Origin\",\"value\":\"*\"},{\"name\":\"Expires\",\"value\":\"Sat, 01 Jan 2000 00:00:00 GMT\"},{\"name\":\"Content-Type\",\"value\":\"text\\/javascript; charset=UTF-8\"},{\"name\":\"Facebook-API-Version\",\"value\":\"v2.6\"},{\"name\":\"Cache-Control\",\"value\":\"private, no-cache, no-store, must-revalidate\"},{\"name\":\"Vary\",\"value\":\"Accept-Encoding\"},{\"name\":\"Pragma\",\"value\":\"no-cache\"},{\"name\":\"ETag\",\"value\":\"\\\"087965e62e668b0c7ebe42063559d53935e9b9ea\\\"\"}],\"body\":\"{\\\"id\\\":\\\"127016687734698\\\",\\\"name\\\":\\\"Richard Alabgiajbgak Thurnman\\\"}\"},{\"code\":404,\"headers\":[{\"name\":\"Content-Type\",\"value\":\"text\\/javascript; charset=UTF-8\"},{\"name\":\"Facebook-API-Version\",\"value\":\"v2.6\"},{\"name\":\"WWW-Authenticate\",\"value\":\"OAuth \\\"Facebook Platform\\\" \\\"not_found\\\" \\\"(#803) Cannot query users by their username (unknown-page)\\\"\"},{\"name\":\"Expires\",\"value\":\"Sat, 01 Jan 2000 00:00:00 GMT\"},{\"name\":\"Cache-Control\",\"value\":\"no-store\"},{\"name\":\"Vary\",\"value\":\"Accept-Encoding\"},{\"name\":\"Pragma\",\"value\":\"no-cache\"},{\"name\":\"Access-Control-Allow-Origin\",\"value\":\"*\"}],\"body\":\"{\\\"error\\\":{\\\"message\\\":\\\"(#803) Cannot query users by their username (unknown-page)\\\",\\\"type\\\":\\\"OAuthException\\\",\\\"code\\\":803,\\\"fbtrace_id\\\":\\\"GoKz3IQkeJX\\\"}}\"}]",
       "headers": {
         "Access-Control-Allow-Origin": "*",
         "Pragma": "no-cache",
@@ -24,11 +24,11 @@
         "facebook-api-version": "v2.0",
         "Expires": "Sat, 01 Jan 2000 00:00:00 GMT",
         "Content-Type": "text/javascript; charset=UTF-8",
-        "x-fb-trace-id": "HPNuTZeHUaF",
-        "x-fb-rev": "2464313",
+        "x-fb-trace-id": "GyLmMeKpTNJ",
+        "x-fb-rev": "2474568",
         "Vary": "Accept-Encoding",
-        "X-FB-Debug": "Ffzr+o+D9uwsABYvA0gkMO1whnoI71ILD9dMUmwg3JGtH1/WIkJaZL3LztYVHNn7WJ4up6F0kGBlsCnF5wKazg==",
-        "Date": "Mon, 25 Jul 2016 20:04:36 GMT",
+        "X-FB-Debug": "OAL8POsdW/WYCpoh6XSIeHPmDdTXiI638NIwppkzuMV9ASXLdhaoFhPqGJvmxqSdjjHxO1ATlu+OeoFN4ElJUQ==",
+        "Date": "Fri, 29 Jul 2016 19:08:17 GMT",
         "Transfer-Encoding": "chunked",
         "Connection": "keep-alive"
       },

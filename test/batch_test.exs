@@ -87,8 +87,6 @@ defmodule BatchTest do
       response = Exfacebook.get_connections(pid, :me, :feed, %Params{access_token: access_token})
 
       response = batch %Params{access_token: access_token}, fn(api) ->
-        Logger.info "RESPONSE: #{inspect(response)}"
-
         api = api |> next_page(pid, response)
         api = api |> prev_page(pid, response)
 
@@ -113,8 +111,8 @@ defmodule BatchTest do
 
         # no data
         assert api == [
-          %{"method" => "GET", "relative_url" => "/v2.6/221646591235273/posts?limit=25&access_token=217873215035447|4e2d3c9835e99d8dc7c93d62cc16d159&until=1467141001&__paging_token=enc_AdBCRMRZCfQ3qtzKzq27JPF3qBmnFTOlGPeSAGhiRBPU7ZCcu1dQ45AIlTjolPwUGZBzs75O2V95ZAM0XaPJ2OLZC99ogNi2kX3PBuSSMRHGZCNiJFNgZDZD"},
-          %{"method" => "GET", "relative_url" => "/v2.6/221646591235273/posts?limit=25&since=1469471771&access_token=217873215035447|4e2d3c9835e99d8dc7c93d62cc16d159&__paging_token=enc_AdCFYOXMeeDoDCOBfy7Nt5dVsX8LddxDzP9JuwDErCENQXMJrlZAWACd4mlDHlkhN7E4UgnhJj0gk3lx7S4YViiEzV4UcZBOEgtQl4E6ZCSe3EH7AZDZD&__previous=1"}
+          %{"method" => "GET", "relative_url" => "/v2.6/221646591235273/posts?limit=25&access_token=217873215035447|4e2d3c9835e99d8dc7c93d62cc16d159&until=1467404034&__paging_token=enc_AdDovqp7v6JFkobcT3Sh31ca6OMAvnZA9ZAXZCwD2Bs2dD98Hbi3rrtwXTuVXh5ijPAKoQGzNDNZAUgJjym896A3NopDQUxxlQP1xFUZB68UaXh8zAAZDZD"},
+          %{"method" => "GET", "relative_url" => "/v2.6/221646591235273/posts?limit=25&since=1469812227&access_token=217873215035447|4e2d3c9835e99d8dc7c93d62cc16d159&__paging_token=enc_AdDPApcpcl9NfRG1r4ZARfeMRViGbWzsAjfpQ65aS0T8HVEYkfsoNp2tvevtVFBKILiKZBP5y5kzsBIHkTSmZCmboXeanGPQ0trVZBAZBmqVgkHeUSgZDZD&__previous=1"}
         ]
 
         api
