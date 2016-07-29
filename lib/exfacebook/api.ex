@@ -12,6 +12,7 @@ defmodule Exfacebook.Api do
   @type success :: {:ok, Map.t}
   @type error  :: {:error, Error.t}
   @type api :: List.t
+  @type body :: Map.t
 
   @moduledoc ~S"""
   Basic functions for accessing Facebook API.
@@ -53,7 +54,7 @@ defmodule Exfacebook.Api do
   def next_page({:ok, _response}), do: {:ok, %{"data" => []}}
 
   @spec next_page(api, success | error) :: success | error
-  def next_page(api, {:error, _error} = state), do: api
+  def next_page(api, {:error, _error}), do: api
   def next_page(api, {:ok, %{"paging" => %{"next" => url}}}) do
     url = String.replace(url, "https://graph.facebook.com", "")
     api ++ [%{"method" => "GET", "relative_url" => url}]
@@ -68,7 +69,7 @@ defmodule Exfacebook.Api do
   def prev_page({:ok, _response}), do: {:ok, %{"data" => []}}
 
   @spec prev_page(api, success | error) :: success | error
-  def prev_page(api, {:error, _error} = state), do: api
+  def prev_page(api, {:error, _error}), do: api
   def prev_page(api, {:ok, %{"paging" => %{"previous" => url}}}) do
     url = String.replace(url, "https://graph.facebook.com", "")
     api ++ [%{"method" => "GET", "relative_url" => url}]
@@ -125,11 +126,30 @@ defmodule Exfacebook.Api do
   end
 
 
-  @spec put_connections(id, name, Params.t) :: success | error
+  @doc ~S"""
+  Use `put_connections` for posting messages or other update actions.
+
+  Example:
+      put_connections(:me, :feed, %Params{access_token: "access-token"}, %{message: "message-example"})
+  """
+  @spec put_connections(id, name, Params.t, body) :: success | error
   def put_connections(id, name, params, body \\ %{}) do
     params = Map.delete(params, :limit)
     body = Map.to_list(body)
     _post(id, name, params, body)
+  end
+
+
+  @doc """
+  Use `put_connections` for posting messages or other update actions.
+  """
+  @spec put_connections(api, id, name, Params.t, body) :: success | error
+  def put_connections(api, id, name, params, body) do
+    relative_url = params |> _make_url_batch("#{id}/#{name}")
+    body = body
+    |> Enum.map(fn({key, value}) -> "#{key}=#{value}" end)
+    |> Enum.join("&amp;")
+    api ++ [%{"method" => "POST", "relative_url" => relative_url, "body" => body}]
   end
 
 
