@@ -53,8 +53,7 @@ If [available in Hex](https://hex.pm/docs/publish), the package can be installed
 - [+] add test for next_page
 - [+] add test for prev_page
 - [+] batch api for get_object and get_connections
-- [ ] replace api by batch_requests
-- [ ] batch api for put_*
+- [+] batch api for put_*
+- [+] put_*
+- [+] wrap api by GenServer for put operations as cast and get as call
 - [ ] realtime updates subscribe, list_subscriptions, unsubscribe, meet_challenge
-- [ ] put_*
-- [ ] wrap api by GenServer for put operations as cast and get as call
