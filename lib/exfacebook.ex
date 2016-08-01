@@ -17,6 +17,35 @@ defmodule Exfacebook do
         http_options: [recv_timeout: :infinity],
         id: "your_app_id_optional",
         secret: "your_app_secret_optiona"
+
+  How to use API?
+
+  ## Examples:
+
+    * `start_link` - if you want to have worker you can start Exfacebook GenServer and use `pid`
+    as entry param for API methods:
+
+      {:ok, pid} = Exfacebook.start_link
+
+    * `get_object` - get user or page related attributes, in case if you decide to
+    use specific params for Facebook API pass them to Params struct:
+
+      {:ok, %{"id" => id, "picture" => picture}} = Exfacebook.get_object(pid, :me, %Params{access_token: "access-token", fields: "id, picture"})
+
+    * `get_connections` - get collection related items and attributes(feed or home or friends):
+
+      {:ok, %{"data" => collection}} = response = Exfacebook.get_connections(pid, :feed, %Params{fields: "id, name", access_token: "access-token"})
+
+    * `next_page`/`prev_page` - take next or prev collections using response from `get_connections`:
+
+      response = Exfacebook.get_connections(pid, :feed, %Params{fields: "id, name", access_token: "access-token"})
+      response2 = Exfacebook.next_page(pid, response)
+      response3 = Exfacebook.next_page(pid, response2)
+      response4 = Exfacebook.prev_page(pid, response3)
+
+    * `put_connections` - update actions in facebook, example creates the new message in feed:
+
+      Exfacebook.put_connections(:me, :feed, %Params{access_token: "access-token"}, %{message: "hello"})
   """
 
   def start_link(options \\ []) do
@@ -34,15 +63,6 @@ defmodule Exfacebook do
 
   Params are coming like normal requests encoded to JSON and then Facebook
   emulate requests on their side:
-
-  ## Example:
-
-      [
-        {
-          "headers" => { "Content-Type" => "application/json" },
-          "body" => { ... }
-        }
-      ]
   """
   def batch(params, callback) do
     callback.([]) |> Api.batch(params)

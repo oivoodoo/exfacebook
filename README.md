@@ -39,7 +39,7 @@ If [available in Hex](https://hex.pm/docs/publish), the package can be installed
       api
     end)
 
-
+    Exfacebook.put_connections(:me, :feed, %Params{access_token: "access-token"}, %{message: "hello"})
 ```
 
 
