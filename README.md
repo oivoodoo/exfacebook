@@ -22,24 +22,33 @@ If [available in Hex](https://hex.pm/docs/publish), the package can be installed
 ## Examples
 
 
+```elixir
+  alias Exfacebook.Params
+
+  {:ok, pid} = Exfacebook.start_link
+
+  {:ok, attributes} = Exfacebook.get_object(pid, :me, %Params{access_token: "access-token"})
 ```
-    alias Exfacebook.Params
 
-    {:ok, pid} = Exfacebook.start_link
+```elixir
+  {:ok, %{"data" => collection}} = response = Exfacebook.get_connections(pid, :feed, %Params{fields: "id, name", access_token: "access-token"})
+```
 
-    {:ok, attributes} = Exfacebook.get_object(pid, :me, %Params{access_token: "access-token"})
+```elixir
+  {:ok, %{"data" => collection2}} = Exfacebook.next_page(pid, response)
+```
 
-    {:ok, %{"data" => collection}} = response = Exfacebook.get_connections(pid, :feed, %Params{fields: "id, name", access_token: "access-token"})
+```elixir
+  [{:ok, %{"data" => collection}}, {:ok, %{"id" => id, "name" => name}}] = Exfacebook.batch(%Params{access_token: "access-token"}, fn(api) ->
+    api = api |> Exfacebook.get_object(pid, :me, %Params{fields: "id, name"})
+    api = api |> Exfacebook.get_connections(pid, :feed, %Params{fields: "id, name"})
+    api
+  end)
+```
 
-    {:ok, %{"data" => collection2}} = Exfacebook.next_page(pid, response)
 
-    [{:ok, %{"data" => collection}}, {:ok, %{"id" => id, "name" => name}}] = Exfacebook.batch(%Params{access_token: "access-token"}, fn(api) ->
-      api = api |> Exfacebook.get_object(pid, :me, %Params{fields: "id, name"})
-      api = api |> Exfacebook.get_connections(pid, :feed, %Params{fields: "id, name"})
-      api
-    end)
-
-    Exfacebook.put_connections(:me, :feed, %Params{access_token: "access-token"}, %{message: "hello"})
+``` elixir
+  Exfacebook.put_connections(:me, :feed, %Params{access_token: "access-token"}, %{message: "hello"})
 ```
 
 
