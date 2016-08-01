@@ -85,7 +85,7 @@ defmodule Exfacebook do
   """
   define_api :list_subscriptions, :get, []
   define_api :subscribe, :post, [object, fields, callback_url, verify_token]
-  define_api :unsubscribe, :post, [object, fields, callback_url, verify_token]
+  define_api :unsubscribe, :post, [object]
 
   @doc ~S"""
   Passing prepared params for batch processing using Facebook API.
