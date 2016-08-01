@@ -73,6 +73,20 @@ defmodule Exfacebook do
   define_api :prev_page, :get, [response]
   define_api :put_connections, :post, [id, name, params, body]
 
+  @doc """
+  Realtime updates for your app.
+
+  ## Examples:
+
+    * `list_subscriptions` - returns list of subscriptions
+    * `subscribe` - subscribe to real time updates for `object`, `fields` should
+    contains object to watch for updates("feed, friends").
+    * `unsubscribe' - unsubscribe `object` from real time updates.
+  """
+  define_api :list_subscriptions, :get, []
+  define_api :subscribe, :post, [object, fields, callback_url, verify_token]
+  define_api :unsubscribe, :post, [object, fields, callback_url, verify_token]
+
   @doc ~S"""
   Passing prepared params for batch processing using Facebook API.
 
