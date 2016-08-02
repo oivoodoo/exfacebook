@@ -74,16 +74,31 @@ defmodule Exfacebook do
   define_api :put_connections, :post, [id, name, params, body]
 
   @doc """
-  Realtime updates for your app.
+  Realtime updates using subscriptions API
 
   ## Examples:
 
     * `list_subscriptions` - returns list of subscriptions
+
+      ```elixir
+      params = %Params{fields: "id,name"}
+
+      {:ok, %{
+        "data" => [
+          %{"active" => true,
+           "callback_url" => "https://example.com/client/subscriptions",
+           "fields" => ["feed", "friends", "music"],
+           "object" => "user"}]
+        }
+      } = Api.list_subscriptions(params)
+      ```
+
     * `subscribe` - subscribe to real time updates for `object`, `fields` should
     contains object to watch for updates("feed, friends").
+
     * `unsubscribe' - unsubscribe `object` from real time updates.
   """
-  define_api :list_subscriptions, :get, []
+  define_api :list_subscriptions, :get, [params]
   define_api :subscribe, :post, [object, fields, callback_url, verify_token]
   define_api :unsubscribe, :post, [object]
 

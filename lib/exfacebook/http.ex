@@ -23,13 +23,13 @@ defmodule Exfacebook.Http do
   """
   @spec get(String) :: {:ok, Map.t} | {:error, Error.t}
   def get(url) do
+    Logger.debug("[Exfacebook.Http.get] url: #{inspect(url)}")
     HTTPoison.get(url, [], @http_options) |> _handle_error
   end
 
   @spec post(String, Map.t) :: {:ok, Map.t} | {:error, Error.t}
   def post(url, data \\ []) do
-    body = []
-    if data != [], do: body = {:form, data}
+    body = if data != [], do: {:form, data}, else: []
     response = HTTPoison.post(url, body, @form_headers, @http_options)
     Logger.debug "[Facebook.Api.post] response: #{inspect(response)}"
     response |> _handle_error

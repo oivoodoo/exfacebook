@@ -39,6 +39,17 @@ defmodule Exfacebook.Api do
   end
 
 
+  @doc ~S"""
+  Getting list of subscriptions for app, we don't need to use user access
+  token, it requires to have only app_id and secret.
+  """
+  @spec list_subscriptions(Params.t) :: success | error
+  def list_subscriptions(params) do
+    params = params |> Map.delete(:limit) |> Map.delete(:access_token)
+    _get(Config.id, :subscriptions, params)
+  end
+
+
   @doc """
   Pagination `next_page` is using response from calls of `get_connections`.
 
