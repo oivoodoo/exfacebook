@@ -4,7 +4,6 @@ defmodule Exfacebook.Api do
 
   alias Exfacebook.Http
   alias Exfacebook.Config
-  alias Exfacebook.Params
   alias Exfacebook.Error
 
   @type name :: String.t | binary
@@ -13,6 +12,7 @@ defmodule Exfacebook.Api do
   @type error  :: {:error, Error.t}
   @type api :: List.t
   @type body :: Map.t
+  @type params :: Map.t
 
   @moduledoc ~S"""
   Basic functions for accessing Facebook API.
@@ -23,18 +23,21 @@ defmodule Exfacebook.Api do
 
   Example:
 
-    {:ok, %{"data" => collection}} = get_connections(:me, :feed, %Params{fields: "id, name"})
+    {:ok, %{"data" => collection}} = get_connections(:me, :feed, %{fields: "id, name"})
   """
-  @spec get_connections(id, name, Params.t) :: success | error
-  def get_connections(id, name, params), do: _get(id, name, params)
+  @spec get_connections(id, name, params) :: success | error
+  def get_connections(id, name, params) do
+    params = Map.put_new(params, :limit, 25)
+    _get(id, name, params)
+  end
 
 
   @doc """
   Use `get_connections` for getting collection using batch Facebook API.
   """
-  @spec get_connections(api, id, name, Params.t) :: Map.t
+  @spec get_connections(api, id, name, params) :: Map.t
   def get_connections(api, id, name, params) do
-    relative_url = params |> _make_url_batch("#{id}/#{name}")
+    relative_url = _make_url_batch(params, "#{id}/#{name}")
     api ++ [%{"method" => "GET", "relative_url" => relative_url}]
   end
 
@@ -43,10 +46,29 @@ defmodule Exfacebook.Api do
   Getting list of subscriptions for app, we don't need to use user access
   token, it requires to have only app_id and secret.
   """
-  @spec list_subscriptions(Params.t) :: success | error
+  @spec list_subscriptions(params) :: success | error
   def list_subscriptions(params) do
-    params = params |> Map.delete(:limit) |> Map.delete(:access_token)
+    params = params |> Map.delete(:access_token)
     _get(Config.id, :subscriptions, params)
+  end
+
+
+  @doc ~S"""
+  Subscribe to real time updates to object.
+
+  `callback_url` - https api endpoint to receive real time updates.
+  `verify_token` - token to verify post request from facebook with updates.
+  `fields` - 'friends, feed' as an example.
+  """
+  @spec subscribe(id, String.t, String.t, String.t) :: success | error
+  def subscribe(id, fields, callback_url, verify_token) do
+    params = %{
+      callback_url: callback_url,
+      verify_token: verify_token,
+      fields: fields,
+    }
+
+    _post(id, :subscriptions, params)
   end
 
 
@@ -119,20 +141,17 @@ defmodule Exfacebook.Api do
 
   Example:
 
-    {:ok, %{"id" => id, "name" => name}} = get_object(:me, %Params{access_token: "access-token", fields: "id, name"})
+    {:ok, %{"id" => id, "name" => name}} = get_object(:me, %{access_token: "access-token", fields: "id, name"})
   """
-  @spec get_object(id, Params.t) :: success | error
-  def get_object(id, params) do
-    params = Map.delete(params, :limit)
-    _get(id, params)
-  end
+  @spec get_object(id, params) :: success | error
+  def get_object(id, params), do: _get(id, params)
 
   @doc """
   Use `get_object` for getting object related attributes as part of batch API.
   """
-  @spec get_object(api, id, Params.t) :: Map.t
+  @spec get_object(api, id, params) :: Map.t
   def get_object(api, id, params) do
-    relative_url = Map.delete(params, :limit) |> _make_url_batch(id)
+    relative_url = _make_url_batch(params, id)
     api ++ [%{"method" => "GET", "relative_url" => relative_url}]
   end
 
@@ -141,11 +160,10 @@ defmodule Exfacebook.Api do
   Use `put_connections` for posting messages or other update actions.
 
   Example:
-      put_connections(:me, :feed, %Params{access_token: "access-token"}, %{message: "message-example"})
+      put_connections(:me, :feed, %{access_token: "access-token"}, %{message: "message-example"})
   """
-  @spec put_connections(id, name, Params.t, body) :: success | error
+  @spec put_connections(id, name, params, body) :: success | error
   def put_connections(id, name, params, body \\ %{}) do
-    params = Map.delete(params, :limit)
     body = Map.to_list(body)
     _post(id, name, params, body)
   end
@@ -154,7 +172,7 @@ defmodule Exfacebook.Api do
   @doc """
   Use `put_connections` for posting messages or other update actions.
   """
-  @spec put_connections(api, id, name, Params.t, body) :: success | error
+  @spec put_connections(api, id, name, params, body) :: success | error
   def put_connections(api, id, name, params, body) do
     relative_url = params |> _make_url_batch("#{id}/#{name}")
     body = body
@@ -189,20 +207,23 @@ defmodule Exfacebook.Api do
   end
 
 
-  defp _prepare(params), do: params |> _auth |> Map.delete(:__struct__) |> Map.to_list
-  defp _batch_prepare(params), do: params |> Map.delete(:access_token) |> Map.delete(:__struct__) |> Map.to_list
+  defp _prepare(params), do: params |> _auth |> Map.to_list
+  defp _batch_prepare(params) do
+    params |> Map.delete(:access_token) |> Map.to_list
+  end
 
 
   defp _auth(params), do: _encrypt(params, Config.id, Config.secret)
 
 
-  defp _encrypt(%Params{access_token: nil} = params, _, nil), do: params
-  defp _encrypt(%Params{access_token: nil} = params, id, secret) do
-    %Params{params | access_token: "#{id}|#{secret}"}
-  end
-  defp _encrypt(%Params{access_token: access_token} = params, _, secret) do
-    access_token = :crypto.hmac(:sha256, secret, access_token)
-    appsecret_proof = Base.encode16(access_token, case: :lower)
-    Map.put(params, :appsecret_proof, appsecret_proof)
+  defp _encrypt(params, _, nil), do: params
+  defp _encrypt(params, id, secret) do
+    case params do
+      %{access_token: access_token} ->
+        access_token = :crypto.hmac(:sha256, secret, access_token)
+        appsecret_proof = Base.encode16(access_token, case: :lower)
+        Map.put(params, :appsecret_proof, appsecret_proof)
+      _ -> Map.put(params, :access_token, "#{id}|#{secret}")
+    end
   end
 end

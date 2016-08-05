@@ -23,19 +23,17 @@ If [available in Hex](https://hex.pm/docs/publish), the package can be installed
 
 
 ```elixir
-  alias Exfacebook.Params
-
   {:ok, pid} = Exfacebook.start_link
 
-  {:ok, attributes} = Exfacebook.get_object(pid, :me, %Params{access_token: "access-token"})
+  {:ok, attributes} = Exfacebook.get_object(pid, :me, %{access_token: "access-token"})
 ```
 
 ```elixir
-  {:ok, %{"data" => collection}} = response = Exfacebook.get_connections(pid, :feed, %Params{fields: "id, name", access_token: "access-token"})
+  {:ok, %{"data" => collection}} = response = Exfacebook.get_connections(pid, :feed, %{fields: "id, name", access_token: "access-token"})
 ```
 
 ```elixir
-  response = Exfacebook.get_connections(pid, :feed, %Params{fields: "id, name", access_token: "access-token"})
+  response = Exfacebook.get_connections(pid, :feed, %{fields: "id, name", access_token: "access-token"})
   {:ok, %{"data" => collection1}} = response2 = Exfacebook.next_page(pid, response)
   {:ok, %{"data" => collection2}} = Exfacebook.prev_page(pid, response2)
 ```
@@ -43,9 +41,9 @@ If [available in Hex](https://hex.pm/docs/publish), the package can be installed
 Example of batch requests:
 
 ```elixir
-  [{:ok, %{"data" => collection}}, {:ok, %{"id" => id, "name" => name}}] = Exfacebook.batch(%Params{access_token: "access-token"}, fn(api) ->
-    api = api |> Exfacebook.get_object(pid, :me, %Params{fields: "id, name"})
-    api = api |> Exfacebook.get_connections(pid, :feed, %Params{fields: "id, name"})
+  [{:ok, %{"data" => collection}}, {:ok, %{"id" => id, "name" => name}}] = Exfacebook.batch(%{access_token: "access-token"}, fn(api) ->
+    api = api |> Exfacebook.get_object(pid, :me, %{fields: "id, name"})
+    api = api |> Exfacebook.get_connections(pid, :feed, %{fields: "id, name"})
     api
   end)
 ```
@@ -53,7 +51,7 @@ Example of batch requests:
 Example of posting message to feed:
 
 ``` elixir
-  Exfacebook.put_connections(:me, :feed, %Params{access_token: "access-token"}, %{message: "hello"})
+  Exfacebook.put_connections(:me, :feed, %{access_token: "access-token"}, %{message: "hello"})
 ```
 
 Using `Exfacebook.Api` outside of GenServer. `Exfacebook` module is working as
@@ -61,7 +59,7 @@ proxy for accessing Api module by specifying `GET` requests as `call` and `PUT`
 as `cast` actions.
 
 ```elixir
-    {:ok, attributes} = Exfacebook.Api.get_object(:me, %Params{access_token: "access-token"})
+    {:ok, attributes} = Exfacebook.Api.get_object(:me, %{access_token: "access-token"})
 ```
 
 ## TODO:

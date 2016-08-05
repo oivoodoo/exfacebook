@@ -6,7 +6,6 @@ defmodule BatchTest do
   import Exfacebook.TestConfig
 
   alias Exfacebook.Error
-  alias Exfacebook.Params
 
   require Logger
 
@@ -20,8 +19,8 @@ defmodule BatchTest do
     use_cassette "batch#get_object" do
       pid = __MODULE__
 
-      response = batch %Params{access_token: access_token}, fn(api) ->
-        api = api |> get_object(pid, :me, %Params{fields: "id, name"})
+      response = batch %{access_token: access_token}, fn(api) ->
+        api = api |> get_object(pid, :me, %{fields: "id, name"})
         api
       end
 
@@ -35,11 +34,11 @@ defmodule BatchTest do
     use_cassette "batch#get_object_and_get_connections" do
       pid = __MODULE__
 
-      response = batch %Params{access_token: access_token}, fn(api) ->
-        api = api |> get_object(pid, :me, %Params{fields: "id, name"})
+      response = batch %{access_token: access_token}, fn(api) ->
+        api = api |> get_object(pid, :me, %{fields: "id, name"})
         assert api == [%{"method" => "GET", "relative_url" => "/v2.6/me?fields=id%2c+name"}]
 
-        api = api |> get_connections(pid, :me, :feed, %Params{fields: "id, name"})
+        api = api |> get_connections(pid, :me, :feed, %{fields: "id, name"})
         assert api == [
           %{"method" => "GET", "relative_url" => "/v2.6/me?fields=id%2c+name"},
           %{"method" => "GET", "relative_url" => "/v2.6/me/feed?fields=id%2c+name&limit=25"},
@@ -58,11 +57,11 @@ defmodule BatchTest do
     use_cassette "batch#get_object_and_get_connections_and_error" do
       pid = __MODULE__
 
-      response = batch %Params{access_token: access_token}, fn(api) ->
-        api = api |> get_object(pid, :me, %Params{fields: "id, name"})
+      response = batch %{access_token: access_token}, fn(api) ->
+        api = api |> get_object(pid, :me, %{fields: "id, name"})
         assert api == [%{"method" => "GET", "relative_url" => "/v2.6/me?fields=id%2c+name"}]
 
-        api = api |> get_connections(pid, "unknown-page", :posts, %Params{fields: "id, name"})
+        api = api |> get_connections(pid, "unknown-page", :posts, %{fields: "id, name"})
         assert api == [
           %{"method" => "GET", "relative_url" => "/v2.6/me?fields=id%2c+name"},
           %{"method" => "GET", "relative_url" => "/v2.6/unknown-page/posts?fields=id%2c+name&limit=25"},
@@ -84,9 +83,9 @@ defmodule BatchTest do
     use_cassette "batch#next_prev_get_connections" do
       pid = __MODULE__
 
-      response = Exfacebook.get_connections(pid, :me, :feed, %Params{access_token: access_token})
+      response = Exfacebook.get_connections(pid, :me, :feed, %{access_token: access_token})
 
-      response = batch %Params{access_token: access_token}, fn(api) ->
+      response = batch %{access_token: access_token}, fn(api) ->
         api = api |> next_page(pid, response)
         api = api |> prev_page(pid, response)
 
@@ -103,9 +102,9 @@ defmodule BatchTest do
     use_cassette "batch#next_prev_get_connections_for_pages" do
       pid = __MODULE__
 
-      response = Exfacebook.get_connections(pid, "majesticcasual", :posts, %Params{})
+      response = Exfacebook.get_connections(pid, "majesticcasual", :posts, %{})
 
-      response = batch %Params{}, fn(api) ->
+      response = batch fn(api) ->
         api = api |> next_page(pid, response)
         api = api |> prev_page(pid, response)
 

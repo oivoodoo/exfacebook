@@ -30,25 +30,25 @@ defmodule Exfacebook do
     ```
 
     * `get_object` - get user or page related attributes, in case if you decide to
-    use specific params for Facebook API pass them to Params struct:
+    use specific params for Facebook API like `fields`
 
     ```elixir
     {:ok, %{"id" => id, "picture" => picture}} = Exfacebook.get_object(
-       pid, :me, %Params{access_token: "access-token", fields: "id, picture"})
+       pid, :me, %{access_token: "access-token", fields: "id, picture"})
     ```
 
     * `get_connections` - get collection related items and attributes(feed or home or friends):
 
     ```elixir
       {:ok, %{"data" => collection}} = response = Exfacebook.get_connections(
-         pid, :feed, %Params{fields: "id, name", access_token: "access-token"})
+         pid, :feed, %{fields: "id, name", access_token: "access-token"})
     ```
 
     * `next_page`/`prev_page` - take next or prev collections using response from `get_connections`:
 
     ```elixir
       response = Exfacebook.get_connections(pid, :feed,
-         %Params{fields: "id, name", access_token: "access-token"})
+         %{fields: "id, name", access_token: "access-token"})
       response2 = Exfacebook.next_page(pid, response)
       response3 = Exfacebook.next_page(pid, response2)
       response4 = Exfacebook.prev_page(pid, response3)
@@ -58,7 +58,7 @@ defmodule Exfacebook do
 
     ```elixir
       Exfacebook.put_connections(:me, :feed,
-         %Params{access_token: "access-token"}, %{message: "hello"})
+         %{access_token: "access-token"}, %{message: "hello"})
     ```
 
   """
@@ -81,7 +81,7 @@ defmodule Exfacebook do
     * `list_subscriptions` - returns list of subscriptions
 
       ```elixir
-      params = %Params{fields: "id,name"}
+      params = %{fields: "id,name"}
 
       {:ok, %{
         "data" => [
@@ -111,4 +111,5 @@ defmodule Exfacebook do
   def batch(params, callback) do
     callback.([]) |> Api.batch(params)
   end
+  def batch(callback), do: batch(%{}, callback)
 end
