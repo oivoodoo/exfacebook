@@ -102,7 +102,7 @@ defmodule Exfacebook do
       "token-123")
     ```
 
-    * `unsubscribe' - unsubscribe `object` from real time updates.
+    * `unsubscribe` - unsubscribe `object` from real time updates.
 
     ```elixir
     Exfacebook.unsubscribe(pid, "id-1")
