@@ -36,10 +36,8 @@ defmodule Exfacebook.DevTest do
   def subscribe do
     {:ok, pid} = Exfacebook.start_link
 
-    params = %{fields: "id,name"}
-
-    {:ok, collection} = Exfacebook.list_subscriptions(pid, params)
-    Logger.info "[Exfacebook] subscriptions: #{inspect(collection)}"
+    response = Exfacebook.subscribe(pid, Exfacebook.Config.id, "friends, feed", "http://www.example.com/facebook/updates", "token-123")
+    Logger.info "[Exfacebook] RESPONSE: #{inspect(response)}"
   end
 end
 
@@ -59,3 +57,4 @@ Exfacebook.DevTest.list_subscriptions
 Exfacebook.DevTest.gen_list_subscriptions
 Exfacebook.DevTest.get_connections
 Exfacebook.DevTest.get_object
+Exfacebook.DevTest.subscribe

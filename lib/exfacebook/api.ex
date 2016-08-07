@@ -56,7 +56,7 @@ defmodule Exfacebook.Api do
   @doc """
   TODO: should we allow to use batch requests for realtime updates?
   """
-  def list_subscriptions(api, params), do: raise "not implemented"
+  def list_subscriptions(_, _), do: raise "not implemented"
 
 
   @doc ~S"""
@@ -67,15 +67,18 @@ defmodule Exfacebook.Api do
   `fields` - 'friends, feed' as an example.
   """
   @spec subscribe(id, String.t, String.t, String.t) :: success | error
-  def subscribe(id, fields, callback_url, verify_token) do
+  def subscribe(id, fields, callback_url, verify_token \\ nil) do
     params = %{
+      object: id,
       callback_url: callback_url,
-      verify_token: verify_token,
       fields: fields,
-    }
+    } |> _assign_verify_token(verify_token)
 
-    _post(id, :subscriptions, params)
+    _post(id, :subscriptions, params, [])
   end
+
+  defp _assign_verify_token(params, nil), do: params
+  defp _assign_verify_token(params, token), do: Map.put(params, :verify_token, token)
 
 
   @doc """
