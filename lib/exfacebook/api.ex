@@ -194,11 +194,7 @@ defmodule Exfacebook.Api do
 
   defp _post(id, params, body), do:  id |> _make_url(params) |> _post(body)
   defp _post(id, name, params, body), do: _post(~s(#{id}/#{name}), params, body)
-  defp _post(url, body)  do
-    Logger.info "_post"
-    Logger.info url
-    Http.post(url, body)
-  end
+  defp _post(url, body), do: Http.post(url, body)
 
 
   defp _make_url(path, params) do

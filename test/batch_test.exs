@@ -36,12 +36,14 @@ defmodule BatchTest do
 
       response = batch %{access_token: access_token}, fn(api) ->
         api = api |> get_object(pid, :me, %{fields: "id, name"})
-        assert api == [%{"method" => "GET", "relative_url" => "/v2.6/me?fields=id%2c+name"}]
+        assert api == [
+          %{"method" => "GET", "relative_url" => "/v2.6/me?fields=id%2c+name"}
+        ]
 
         api = api |> get_connections(pid, :me, :feed, %{fields: "id, name"})
         assert api == [
           %{"method" => "GET", "relative_url" => "/v2.6/me?fields=id%2c+name"},
-          %{"method" => "GET", "relative_url" => "/v2.6/me/feed?fields=id%2c+name&limit=25"},
+          %{"method" => "GET", "relative_url" => "/v2.6/me/feed?fields=id%2c+name"},
         ]
         api
       end
@@ -64,8 +66,9 @@ defmodule BatchTest do
         api = api |> get_connections(pid, "unknown-page", :posts, %{fields: "id, name"})
         assert api == [
           %{"method" => "GET", "relative_url" => "/v2.6/me?fields=id%2c+name"},
-          %{"method" => "GET", "relative_url" => "/v2.6/unknown-page/posts?fields=id%2c+name&limit=25"},
+          %{"method" => "GET", "relative_url" => "/v2.6/unknown-page/posts?fields=id%2c+name"}
         ]
+
         api
       end
 
@@ -110,8 +113,8 @@ defmodule BatchTest do
 
         # no data
         assert api == [
-          %{"method" => "GET", "relative_url" => "/v2.6/221646591235273/posts?limit=25&access_token=217873215035447|4e2d3c9835e99d8dc7c93d62cc16d159&until=1467404034&__paging_token=enc_AdDovqp7v6JFkobcT3Sh31ca6OMAvnZA9ZAXZCwD2Bs2dD98Hbi3rrtwXTuVXh5ijPAKoQGzNDNZAUgJjym896A3NopDQUxxlQP1xFUZB68UaXh8zAAZDZD"},
-          %{"method" => "GET", "relative_url" => "/v2.6/221646591235273/posts?limit=25&since=1469812227&access_token=217873215035447|4e2d3c9835e99d8dc7c93d62cc16d159&__paging_token=enc_AdDPApcpcl9NfRG1r4ZARfeMRViGbWzsAjfpQ65aS0T8HVEYkfsoNp2tvevtVFBKILiKZBP5y5kzsBIHkTSmZCmboXeanGPQ0trVZBAZBmqVgkHeUSgZDZD&__previous=1"}
+          %{"method" => "GET", "relative_url" => "/v2.6/221646591235273/posts?limit=25&access_token=217873215035447|4e2d3c9835e99d8dc7c93d62cc16d159&until=1468086000&__paging_token=enc_AdCYZC3qrd3imNKJzRp8vyDGk84d7CRwoBSARcokLJa5K0bvD1CCZCqXZCGRIqqo11ax0EjtjPL99C0CO1BoatlCcshaIWAhcmrZCRcNhTZADmZCZC2oQZDZD"},
+          %{"method" => "GET", "relative_url" => "/v2.6/221646591235273/posts?limit=25&since=1470591600&access_token=217873215035447|4e2d3c9835e99d8dc7c93d62cc16d159&__paging_token=enc_AdBzj3BvhRyYQ4CiqFQvFrmvCz2OQV3vNMZBXZA9G3YfJmLOdK6lbcNQ8Nyage5WvxwZB8QNDgz5b4y1hZA2FWL0RZCcJjMBXDB6pvd5u43sgCYNhZBwZDZD&__previous=1"}
         ]
 
         api

@@ -1,0 +1,37 @@
+[
+  {
+    "request": {
+      "body": "",
+      "headers": [],
+      "method": "get",
+      "options": {
+        "recv_timeout": "infinity",
+        "connect_timeout": 10000,
+        "timeout": 10000,
+        "pool": false
+      },
+      "request_body": "",
+      "url": "https://graph.facebook.com/v2.6/me?access_token=EAADGJ4ZBWmDcBAL9KrOnFGfKGZCUovMZCxHIxpzITMmmUHD5o5SUkZAZAZABX42MN7x1CO2DQpJbf8nbtKytbDk1qXdnSUS5dNG9ODEa78MfCx0A2kviYkDZA15ZBqlcBYxP9U9TVfzLTm92vEqkkvkgKT4RjiAb9xH2SnbBpBCAj9QosuUoXbED&appsecret_proof=1888f2d0f50452f156498fb34098ddc6c91e1fa0273f47febf407d21dc94412c&fields=id%2cname"
+    },
+    "response": {
+      "body": "{\"id\":\"127016687734698\",\"name\":\"Richard Alabgiajbgak Thurnman\"}",
+      "headers": {
+        "Access-Control-Allow-Origin": "*",
+        "ETag": "\"087965e62e668b0c7ebe42063559d53935e9b9ea\"",
+        "Pragma": "no-cache",
+        "Cache-Control": "private, no-cache, no-store, must-revalidate",
+        "facebook-api-version": "v2.6",
+        "Expires": "Sat, 01 Jan 2000 00:00:00 GMT",
+        "Content-Type": "text/javascript; charset=UTF-8",
+        "x-fb-trace-id": "DTnrkxWqMfq",
+        "x-fb-rev": "2490580",
+        "X-FB-Debug": "Kv67I+TV9Y8xHnf7XjhC+JWIKRaj8rnEQ1BayqhEUihqKx6CQrOMmS4X17YSdrAwqu+aMCxae/uGnOKn5hvWBw==",
+        "Date": "Sun, 07 Aug 2016 20:08:27 GMT",
+        "Connection": "keep-alive",
+        "Content-Length": "63"
+      },
+      "status_code": 200,
+      "type": "ok"
+    }
+  }
+]

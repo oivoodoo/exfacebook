@@ -3,6 +3,20 @@ defmodule Exfacebook.DevTest do
 
   alias Exfacebook.Api
 
+  def get_connections do
+    params = %{fields: "id,name", access_token: System.get_env("FACEBOOK_ACCESS_TOKEN")}
+
+    {:ok, collection} = Api.get_connections(:me, :feed, params)
+    Logger.info "[Exfacebook] me feed: #{inspect(collection)}"
+  end
+
+  def get_object do
+    params = %{fields: "id,name", access_token: System.get_env("FACEBOOK_ACCESS_TOKEN")}
+
+    {:ok, object} = Api.get_object(:me, params)
+    Logger.info "[Exfacebook] me object: #{inspect(object)}"
+  end
+
   def list_subscriptions do
     params = %{fields: "id,name"}
 
@@ -35,3 +49,5 @@ end
 
 Exfacebook.DevTest.list_subscriptions
 Exfacebook.DevTest.gen_list_subscriptions
+Exfacebook.DevTest.get_connections
+Exfacebook.DevTest.get_object
