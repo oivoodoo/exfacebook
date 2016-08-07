@@ -5,6 +5,9 @@ defmodule Exfacebook.Http do
   alias HTTPoison.Response
   alias Exfacebook.Error
 
+  @type success :: {:ok, Map.t}
+  @type error  :: {:error, Error.t}
+
   @moduledoc """
   Http requests using `hackney` and decode response using `HTTPoison` to `JSON`.
   """
@@ -21,16 +24,23 @@ defmodule Exfacebook.Http do
   @doc """
   Make get request and return JSON response as dictionary.
   """
-  @spec get(String) :: {:ok, Map.t} | {:error, Error.t}
+  @spec get(String) :: success | error
   def get(url) do
+    Logger.debug("[Exfacebook.Http.get] url: #{inspect(url)}")
     HTTPoison.get(url, [], @http_options) |> _handle_error
   end
 
-  @spec post(String, Map.t) :: {:ok, Map.t} | {:error, Error.t}
+  @spec post(String, Map.t) :: success | error
   def post(url, data \\ []) do
-    body = []
-    if data != [], do: body = {:form, data}
+    body = if data != [], do: {:form, data}, else: []
     response = HTTPoison.post(url, body, @form_headers, @http_options)
+    Logger.debug "[Facebook.Api.post] response: #{inspect(response)}"
+    response |> _handle_error
+  end
+
+  @spec delete(String) :: success | error
+  def delete(url) do
+    response = HTTPoison.delete(url, @form_headers, @http_options)
     Logger.debug "[Facebook.Api.post] response: #{inspect(response)}"
     response |> _handle_error
   end

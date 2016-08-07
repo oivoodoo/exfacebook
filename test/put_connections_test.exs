@@ -15,13 +15,11 @@ defmodule PutConnectionsTest do
   #
   # Facebook API is not providing test users permissions and put actions.
   #
-  # alias Exfacebook.Params
-  #
   # import Exfacebook.TestConfig
   #
   # test "put_connections for facebook" do
   #   pid = __MODULE__
-  #   params = %Params{access_token: access_token, fields: "id,name"}
+  #   params = %{access_token: access_token, fields: "id,name"}
   #
   #   use_cassette "put_connections#feed_me" do
   #     response = Exfacebook.put_connections(pid, :me, :feed, params, %{message: "good news!"})
