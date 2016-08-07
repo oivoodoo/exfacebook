@@ -96,7 +96,15 @@ defmodule Exfacebook do
     * `subscribe` - subscribe to real time updates for `object`, `fields` should
     contains object to watch for updates("feed, friends").
 
+      ```elixir
+      Exfacebook.subscribe(pid, "id-1", "friends, feed", "http://www.example.com/facebook/updates", "token-123")
+      ```
+
     * `unsubscribe' - unsubscribe `object` from real time updates.
+
+      ```elixir
+      Exfacebook.unsubscribe(pid, "id-1")
+      ```
   """
   define_api :list_subscriptions, :get, [params]
   define_api :subscribe, :post, [object, fields, callback_url, verify_token]
