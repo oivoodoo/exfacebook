@@ -41,7 +41,7 @@ defmodule Exfacebook.Http do
   @spec delete(String) :: success | error
   def delete(url) do
     response = HTTPoison.delete(url, @form_headers, @http_options)
-    Logger.debug "[Facebook.Api.post] response: #{inspect(response)}"
+    Logger.debug "[Facebook.Api.delete] response: #{inspect(response)}"
     response |> _handle_error
   end
 
