@@ -81,4 +81,6 @@ It should produce logging messages about the objects and attributes from feed an
 - [+] batch api for put_*
 - [+] put_*
 - [+] wrap api by GenServer for put operations as cast and get as call
-- [ ] realtime updates subscribe, list_subscriptions, unsubscribe, meet_challenge
+- [+] realtime updates subscribe, list_subscriptions, unsubscribe, meet_challenge
+- [ ] add delete_* methods
+- [ ] add put video and image
