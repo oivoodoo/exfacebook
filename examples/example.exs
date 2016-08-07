@@ -47,6 +47,18 @@ defmodule Exfacebook.DevTest do
   end
 end
 
+if System.get_env("FACEBOOK_ACCESS_TOKEN") == nil do
+  raise "FACEBOOK_ACCESS_TOKEN is required as env param"
+end
+
+if System.get_env("FACEBOOK_APP_ID") == nil do
+  raise "FACEBOOK_APP_ID is required as env param"
+end
+
+if System.get_env("FACEBOOK_APP_SECRET") == nil do
+  raise "FACEBOOK_APP_SECRET is required as env param"
+end
+
 Exfacebook.DevTest.list_subscriptions
 Exfacebook.DevTest.gen_list_subscriptions
 Exfacebook.DevTest.get_connections
