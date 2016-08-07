@@ -36,7 +36,14 @@ defmodule Exfacebook.DevTest do
   def subscribe do
     {:ok, pid} = Exfacebook.start_link
 
-    response = Exfacebook.subscribe(pid, Exfacebook.Config.id, "friends, feed", "http://www.example.com/facebook/updates", "token-123")
+    response = Exfacebook.subscribe(pid, "id-1", "friends, feed", "http://www.example.com/facebook/updates", "token-123")
+    Logger.info "[Exfacebook] RESPONSE: #{inspect(response)}"
+  end
+
+  def unsubscribe do
+    {:ok, pid} = Exfacebook.start_link
+
+    response = Exfacebook.unsubscribe(pid, "id-1")
     Logger.info "[Exfacebook] RESPONSE: #{inspect(response)}"
   end
 end
@@ -57,4 +64,15 @@ Exfacebook.DevTest.list_subscriptions
 Exfacebook.DevTest.gen_list_subscriptions
 Exfacebook.DevTest.get_connections
 Exfacebook.DevTest.get_object
-Exfacebook.DevTest.subscribe
+
+try do
+  Exfacebook.DevTest.subscribe
+rescue
+  _ -> "oh, error"
+end
+
+try do
+  Exfacebook.DevTest.unsubscribe
+rescue
+  _ -> "oh, error"
+end

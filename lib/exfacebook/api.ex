@@ -74,7 +74,17 @@ defmodule Exfacebook.Api do
       fields: fields,
     } |> _assign_verify_token(verify_token)
 
-    _post(id, :subscriptions, params, [])
+    _post(:subscriptions, params, [])
+  end
+
+  @doc ~S"""
+  `id` - id of object to unsubscribe, in case if developer passed `nil`
+  unsubscribe would apply for all subscriptions for facebook app.
+  """
+  @spec unsubscribe(id) :: success | error
+  def unsubscribe(id) do
+    params = %{object: id}
+    _delete(:subscriptions, params)
   end
 
   defp _assign_verify_token(params, nil), do: params
@@ -204,6 +214,10 @@ defmodule Exfacebook.Api do
   defp _post(id, params, body), do:  id |> _make_url(params) |> _post(body)
   defp _post(id, name, params, body), do: _post(~s(#{id}/#{name}), params, body)
   defp _post(url, body), do: Http.post(url, body)
+
+  defp _delete(id, params), do:  id |> _make_url(params) |> _delete
+  defp _delete(id, name, params), do: _delete(~s(#{id}/#{name}), params)
+  defp _delete(url), do: Http.delete(url)
 
 
   defp _make_url(path, params) do
