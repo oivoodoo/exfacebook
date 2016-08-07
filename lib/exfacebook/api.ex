@@ -53,6 +53,12 @@ defmodule Exfacebook.Api do
   end
 
 
+  @doc """
+  TODO: should we allow to use batch requests for realtime updates?
+  """
+  def list_subscriptions(api, params), do: raise "not implemented"
+
+
   @doc ~S"""
   Subscribe to real time updates to object.
 

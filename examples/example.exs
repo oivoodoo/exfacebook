@@ -41,10 +41,6 @@ defmodule Exfacebook.DevTest do
     {:ok, collection} = Exfacebook.list_subscriptions(pid, params)
     Logger.info "[Exfacebook] subscriptions: #{inspect(collection)}"
   end
-
-  def gen_subscribe do
-
-  end
 end
 
 if System.get_env("FACEBOOK_ACCESS_TOKEN") == nil do
