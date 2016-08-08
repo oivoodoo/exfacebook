@@ -9,7 +9,7 @@ If [available in Hex](https://hex.pm/docs/publish), the package can be installed
   1. Add exfacebook to your list of dependencies in `mix.exs`:
 
         def deps do
-          [{:exfacebook, "~> 0.0.4"}]
+          [{:exfacebook, "~> 0.0.5"}]
         end
 
   2. Ensure exfacebook is started before your application:
@@ -65,11 +65,11 @@ as `cast` actions.
 ## Examples
 
     iex -S mix
-    
+
     ```elixir
     Code.require_file("example.exs", "examples/")
     ```
-    
+
 It should produce logging messages about the objects and attributes from feed and me requests.
 
 ## TODO:
