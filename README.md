@@ -50,7 +50,7 @@ Example of batch requests:
 
 Example of posting message to feed:
 
-``` elixir
+```elixir
   Exfacebook.put_connections(:me, :feed, %{access_token: "access-token"}, %{message: "hello"})
 ```
 
@@ -66,9 +66,9 @@ as `cast` actions.
 
     iex -S mix
 
-    ```elixir
-    Code.require_file("example.exs", "examples/")
-    ```
+  ```elixir
+  Code.require_file("example.exs", "examples/")
+  ```
 
 It should produce logging messages about the objects and attributes from feed and me requests.
 
