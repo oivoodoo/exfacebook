@@ -74,13 +74,13 @@ It should produce logging messages about the objects and attributes from feed an
 
 ## TODO:
 
-- [+] add test for get_connections
-- [+] add test for next_page
-- [+] add test for prev_page
-- [+] batch api for get_object and get_connections
-- [+] batch api for put_*
-- [+] put_*
-- [+] wrap api by GenServer for put operations as cast and get as call
-- [+] realtime updates subscribe, list_subscriptions, unsubscribe, meet_challenge
+- [x] add test for get_connections
+- [x] add test for next_page
+- [x] add test for prev_page
+- [x] batch api for get_object and get_connections
+- [x] batch api for put_*
+- [x] put_*
+- [x] wrap api by GenServer for put operations as cast and get as call
+- [x] realtime updates subscribe, list_subscriptions, unsubscribe, meet_challenge
 - [ ] add delete_* methods
 - [ ] add put video and image
