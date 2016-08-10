@@ -59,16 +59,18 @@ proxy for accessing Api module by specifying `GET` requests as `call` and `PUT`
 as `cast` actions.
 
 ```elixir
-    {:ok, attributes} = Exfacebook.Api.get_object(:me, %{access_token: "access-token"})
+  {:ok, attributes} = Exfacebook.Api.get_object(:me, %{access_token: "access-token"})
 ```
 
 ## Examples
 
-    iex -S mix
+```
+  iex -S mix
+```
 
-    ```elixir
-    Code.require_file("example.exs", "examples/")
-    ```
+```elixir
+  Code.require_file("example.exs", "examples/")
+```
 
 It should produce logging messages about the objects and attributes from feed and me requests.
 
