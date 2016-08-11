@@ -113,6 +113,20 @@ defmodule Exfacebook do
   define_api :subscribe, :post, [object, fields, callback_url, verify_token]
   define_api :unsubscribe, :post, [object]
 
+
+  @doc ~S"""
+  ## Examples:
+
+    ```elixir
+    params = %{}
+
+    {:ok, response} = Api.delete_connections(:me, :feed, )
+    ```
+  """
+  define_api :delete_object, :delete, [id, params]
+  define_api :delete_connections, :delete, [id, name, params]
+
+
   @doc ~S"""
   Passing prepared params for batch processing using Facebook API.
 
