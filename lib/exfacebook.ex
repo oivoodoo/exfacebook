@@ -90,14 +90,14 @@ defmodule Exfacebook do
           "fields" => ["feed", "friends", "music"],
           "object" => "user"}]
       }
-    } = Api.list_subscriptions(params)
+    } = Exfacebook.Api.list_subscriptions(params)
     ```
 
     * `subscribe` - subscribe to real time updates for `object`, `fields` should
     contains object to watch for updates("feed, friends").
 
     ```elixir
-    Exfacebook.subscribe(pid, "id-1",
+    Exfacebook.Api.subscribe("id-1",
       "friends, feed", "http://www.example.com/facebook/updates",
       "token-123")
     ```
@@ -105,7 +105,7 @@ defmodule Exfacebook do
     * `unsubscribe` - unsubscribe `object` from real time updates.
 
     ```elixir
-    Exfacebook.unsubscribe(pid, "id-1")
+    Exfacebook.Api.unsubscribe("id-1")
     ```
 
   """
@@ -115,12 +115,21 @@ defmodule Exfacebook do
 
 
   @doc ~S"""
+  You can use `delete_object` and `delete_connections` passing pid or directly
+  from Api module. In case of missing permissions to delete items you will
+  error object as response.
+
   ## Examples:
 
+    * `delete_connections` - delete item from connections
     ```elixir
-    params = %{}
+    {:ok, response} = Exfacebook.Api.delete_connections(:me, :feed, %{ ... })
+    ```
 
-    {:ok, response} = Api.delete_connections(:me, :feed, )
+    * `delete_object` - delete item from Facebook data
+
+    ```elixir
+    {:ok, response} = Exfacebook.Api.delete_object("item-id")
     ```
   """
   define_api :delete_object, :delete, [id, params]
