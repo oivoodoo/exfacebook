@@ -197,6 +197,46 @@ defmodule Exfacebook.Api do
     api ++ [%{"method" => "POST", "relative_url" => relative_url, "body" => body}]
   end
 
+  @doc """
+  Use `delete_connections` to delete object from connections
+
+  Example:
+
+    {:ok, response} = delete_connections(:me, :feed, %{})
+  """
+  @spec delete_connections(id, name, params) :: success | error
+  def delete_connections(id, name, params), do: _delete(id, name, params)
+
+  @doc """
+  Use `delete_connections` for deleting items from connections using batch api
+  """
+  @spec delete_connections(api, id, name, params) :: Map.t
+  def delete_connections(api, id, name, params) do
+    relative_url = _make_url_batch(params, "#{id}/#{name}")
+    api ++ [%{"method" => "DELETE", "relative_url" => relative_url}]
+  end
+
+
+  @doc """
+  Use `delete_object` to delete object from facebook data.
+
+  Example:
+
+    {:ok, response} = delete_connections(:me, :feed, %{})
+  """
+  @spec delete_object(id, params) :: success | error
+  def delete_object(id, params), do: _delete(id, params)
+
+
+  @doc """
+  Use `delete_object` for deleting item from facebook data.
+  """
+  @spec delete_object(api, id, params) :: Map.t
+  def delete_object(api, id, params) do
+    relative_url = _make_url_batch(params, id)
+    api ++ [%{"method" => "DELETE", "relative_url" => relative_url}]
+  end
+
 
   defp _make_url_batch(params, path) do
     path = "#{Config.api_version}/#{path}"
