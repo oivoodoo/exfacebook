@@ -237,6 +237,19 @@ defmodule Exfacebook.Api do
     api ++ [%{"method" => "DELETE", "relative_url" => relative_url}]
   end
 
+  @doc """
+  Returns hash of image data for passed id.
+  """
+  @spec get_picture_data(id, params) :: success | error
+  def get_picture_data(id, params), do: _get(id, params)
+
+
+  @spec get_picture_data(api, id, params) :: Map.t
+  def get_picture_data(api, id, params) do
+    relative_url = _make_url_batch(params, id)
+    api ++ [%{"method" => "GET", "relative_url" => relative_url}]
+  end
+
 
   defp _make_url_batch(params, path) do
     path = "#{Config.api_version}/#{path}"

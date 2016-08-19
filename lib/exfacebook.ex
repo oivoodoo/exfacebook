@@ -73,6 +73,7 @@ defmodule Exfacebook do
   define_api :prev_page, :get, [response]
   define_api :put_connections, :post, [id, name, params, body]
 
+
   @doc """
   Realtime updates using subscriptions API
 
@@ -134,6 +135,24 @@ defmodule Exfacebook do
   """
   define_api :delete_object, :delete, [id, params]
   define_api :delete_connections, :delete, [id, name, params]
+
+
+  @doc ~S"""
+  API for easy accessing basic Facebook API functions like get avatar image,
+  put comment, image, video or make wall post.
+
+  ## Examples:
+
+  """
+  define_api :get_picture_data, :get, [id, params]
+  define_api :get_page_access_token, :get, [id, params]
+  define_api :put_image, :post, [id, name, params, body]
+  define_api :put_video, :post, [id, name, params, body]
+  define_api :put_comment, :post, [id, params, comment]
+  define_api :put_like, :post, [id, params]
+  define_api :put_wall_post, [message, params]
+  define_api :put_wall_post, :post, [id, params]
+  define_api :delete_like, :delete, [id, params]
 
 
   @doc ~S"""
