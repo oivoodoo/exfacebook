@@ -241,12 +241,16 @@ defmodule Exfacebook.Api do
   Returns hash of image data for passed id.
   """
   @spec get_picture_data(id, params) :: success | error
-  def get_picture_data(id, params), do: _get(id, params)
+  def get_picture_data(id, params) do
+    params = Map.put_new(params, :redirect, false)
+    _get(id, :picture, params)
+  end
 
 
   @spec get_picture_data(api, id, params) :: Map.t
   def get_picture_data(api, id, params) do
-    relative_url = _make_url_batch(params, id)
+    params = Map.put_new(params, :redirect, false)
+    relative_url = _make_url_batch(params, "#{id}/picture")
     api ++ [%{"method" => "GET", "relative_url" => relative_url}]
   end
 
