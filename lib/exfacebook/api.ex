@@ -237,6 +237,7 @@ defmodule Exfacebook.Api do
     api ++ [%{"method" => "DELETE", "relative_url" => relative_url}]
   end
 
+
   @doc """
   Returns hash of image data for passed id.
   """
@@ -246,11 +247,24 @@ defmodule Exfacebook.Api do
     _get(id, :picture, params)
   end
 
-
   @spec get_picture_data(api, id, params) :: Map.t
   def get_picture_data(api, id, params) do
     params = Map.put_new(params, :redirect, false)
     relative_url = _make_url_batch(params, "#{id}/picture")
+    api ++ [%{"method" => "GET", "relative_url" => relative_url}]
+  end
+
+
+  @spec get_page_access_token(id, params) :: success | error
+  def get_page_access_token(id, params) do
+    params = Map.put(params, :fields, "access_token")
+    _get(id, params)
+  end
+
+  @spec get_page_access_token(api, id, params) :: Map.t
+  def get_page_access_token(api, id, params) do
+    params = Map.put(params, :fields, "access_token")
+    relative_url = _make_url_batch(params, id)
     api ++ [%{"method" => "GET", "relative_url" => relative_url}]
   end
 
