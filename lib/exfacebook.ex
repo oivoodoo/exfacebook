@@ -148,7 +148,7 @@ defmodule Exfacebook do
   define_api :get_page_access_token, :get, [id, params]
   define_api :put_image, :post, [id, name, params, body]
   define_api :put_video, :post, [id, name, params, body]
-  define_api :put_comment, :post, [id, params, comment]
+  define_api :put_comment, :post, [id, params, message]
   define_api :put_like, :post, [id, params]
   define_api :put_wall_post, :post, [message, params]
   define_api :delete_like, :delete, [id, params]

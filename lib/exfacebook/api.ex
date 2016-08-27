@@ -269,6 +269,28 @@ defmodule Exfacebook.Api do
   end
 
 
+  @spec put_like(id, params) :: success | error
+  def put_like(id, params), do: put_connections(id, :likes, params, %{})
+
+  @spec put_like(api, id, params) :: Map.t
+  def put_like(api, id, params) do
+    relative_url = params |> _make_url_batch("#{id}/likes")
+    api ++ [%{"method" => "POST", "relative_url" => relative_url}]
+  end
+
+
+  @spec put_comment(id, params, message)
+  def put_comment(id, params, message) do
+    put_connections(id, :comments, params, %{message: message})
+  end
+
+  @spec put_comment(api, id, params, message)
+  def put_comment(api, id, params, message) do
+    relative_url = params |> _make_url_batch("#{id}/likes")
+    api ++ [%{"method" => "POST", "relative_url" => relative_url, "body" => "message=#{message}"}]
+  end
+
+
   defp _make_url_batch(params, path) do
     path = "#{Config.api_version}/#{path}"
     :hackney_url.make_url("", path, _batch_prepare(params))
