@@ -273,22 +273,25 @@ defmodule Exfacebook.Api do
   def put_like(id, params), do: put_connections(id, :likes, params, %{})
 
   @spec put_like(api, id, params) :: Map.t
-  def put_like(api, id, params) do
-    relative_url = params |> _make_url_batch("#{id}/likes")
-    api ++ [%{"method" => "POST", "relative_url" => relative_url}]
-  end
+  def put_like(api, id, params), do: put_connections(api, id, :likes, params, %{})
 
 
-  @spec put_comment(id, params, message)
+  @spec put_comment(id, params, String.t) :: success | error
   def put_comment(id, params, message) do
     put_connections(id, :comments, params, %{message: message})
   end
 
-  @spec put_comment(api, id, params, message)
+  @spec put_comment(api, id, params, String.t) :: Map.t
   def put_comment(api, id, params, message) do
-    relative_url = params |> _make_url_batch("#{id}/likes")
-    api ++ [%{"method" => "POST", "relative_url" => relative_url, "body" => "message=#{message}"}]
+    put_connections(api, id, :comments, params, %{message: message})
   end
+
+
+  @spec delete_like(id, params) :: success | error
+  def delete_like(id, params), do: delete_connections(id, :likes, params)
+
+  @spec delete_like(api, id, params) :: success | error
+  def delete_like(api, id, params), do: delete_connections(api, id, :likes, params)
 
 
   defp _make_url_batch(params, path) do
