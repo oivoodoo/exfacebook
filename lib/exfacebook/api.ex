@@ -297,7 +297,7 @@ defmodule Exfacebook.Api do
   @spec put_wall_post(id, String.t, params, Map.t) :: success | error
   def put_wall_post(id, message, params, attachment) do
     if Map.has_key?(:properties) and attachment[:properties] do
-      attachment = Map.put(attachment, :properties, attachment[:properties] |> Poison.encode!)
+      attachment = Map.put(attachment, :properties, Poison.encode!(attachment[:properties]))
     end
     attachment = Map.put(attachment, :message, message)
 
