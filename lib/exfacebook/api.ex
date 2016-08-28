@@ -304,6 +304,16 @@ defmodule Exfacebook.Api do
     put_connections(id, :feed, params, attachment)
   end
 
+  @spec put_wall_post(api, id, String.t, params, Map.t) :: Map.t
+  def put_wall_post(api, id, message, params, attachment) do
+    if Map.has_key?(:properties) and attachment[:properties] do
+      attachment = Map.put(attachment, :properties, Poison.encode!(attachment[:properties]))
+    end
+    attachment = Map.put(attachment, :message, message)
+
+    put_connections(api, id, :feed, params, attachment)
+  end
+
 
   defp _make_url_batch(params, path) do
     path = "#{Config.api_version}/#{path}"
