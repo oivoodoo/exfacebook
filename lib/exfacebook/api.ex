@@ -294,6 +294,17 @@ defmodule Exfacebook.Api do
   def delete_like(api, id, params), do: delete_connections(api, id, :likes, params)
 
 
+  @spec put_wall_post(id, String.t, params, Map.t) :: success | error
+  def put_wall_post(id, message, params, attachment) do
+    if Map.has_key?(:properties) and attachment[:properties] do
+      attachment = Map.put(attachment, :properties, attachment[:properties] |> Poison.encode!)
+    end
+    attachment = Map.put(attachment, :message, message)
+
+    put_connections(id, :feed, params, attachment)
+  end
+
+
   defp _make_url_batch(params, path) do
     path = "#{Config.api_version}/#{path}"
     :hackney_url.make_url("", path, _batch_prepare(params))
