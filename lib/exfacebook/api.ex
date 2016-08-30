@@ -296,8 +296,26 @@ defmodule Exfacebook.Api do
 
 
   @spec put_picture(id, params, file) :: success | error
-  def put_picture(id, params, file) do
+  def put_picture(id, params, {:file, file}) do
     _post(id, :photos, params, {:multipart, [{:file, file}]})
+  end
+  def put_picture(id, params, {:url, url}) do
+    _post(id, :photos, params, {:multipart, [{:url, url}]})
+  end
+  def put_picture(id, params, file) do
+    put_picture(id, params, {:file, file})
+  end
+
+
+  @spec put_video(id, params, file) :: success | error
+  def put_video(id, params, {:file, file}) do
+    _post(id, :videos, params, {:multipart, [{:file, file}]})
+  end
+  def put_video(id, params, {:url, url}) do
+    _post(id, :videos, params, {:multipart, [{:file_url, url}]})
+  end
+  def put_video(id, params, file) do
+    put_video(id, params, {:file, file})
   end
 
 
