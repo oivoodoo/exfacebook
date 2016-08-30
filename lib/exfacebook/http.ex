@@ -31,8 +31,7 @@ defmodule Exfacebook.Http do
   end
 
   @spec post(String, Map.t) :: success | error
-  def post(url, data \\ []) do
-    body = if data != [], do: {:form, data}, else: []
+  def post(url, body \\ nil) do
     response = HTTPoison.post(url, body, @form_headers, @http_options)
     Logger.debug "[Facebook.Api.post] response: #{inspect(response)}"
     response |> _handle_error

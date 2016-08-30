@@ -146,8 +146,8 @@ defmodule Exfacebook do
   """
   define_api :get_picture_data, :get, [id, params]
   define_api :get_page_access_token, :get, [id, params]
-  define_api :put_image, :post, [id, name, params, body]
-  define_api :put_video, :post, [id, name, params, body]
+  define_api :put_picture, :post, [id, params, file]
+  define_api :put_video, :post, [id, params, body]
   define_api :put_comment, :post, [id, params, message]
   define_api :put_wall_post, :post, [id, message, params, attachment]
   define_api :put_like, :post, [id, params]

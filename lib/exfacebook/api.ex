@@ -13,6 +13,7 @@ defmodule Exfacebook.Api do
   @type api :: List.t
   @type body :: Map.t
   @type params :: Map.t
+  @type file :: String.t | binary
 
   @moduledoc ~S"""
   Basic functions for accessing Facebook API.
@@ -69,7 +70,7 @@ defmodule Exfacebook.Api do
       fields: fields,
     } |> _assign_verify_token(verify_token)
 
-    _post(:subscriptions, params, [])
+    _post(:subscriptions, params, {:form, []})
   end
   def subscribe(_, _, _, _, _), do: raise "not implemented for batch requests"
 
@@ -136,7 +137,7 @@ defmodule Exfacebook.Api do
       access_token: params.access_token,
     ]
 
-    Http.post("https://graph.facebook.com", data) |> _handle_batch
+    Http.post("https://graph.facebook.com", {:form, data}) |> _handle_batch
   end
 
   defp _handle_batch({:error, _} = s), do: s
@@ -181,7 +182,7 @@ defmodule Exfacebook.Api do
   @spec put_connections(id, name, params, body) :: success | error
   def put_connections(id, name, params, body \\ %{}) do
     body = Map.to_list(body)
-    _post(id, name, params, body)
+    _post(id, name, params, {:form, body})
   end
 
 
@@ -294,11 +295,20 @@ defmodule Exfacebook.Api do
   def delete_like(api, id, params), do: delete_connections(api, id, :likes, params)
 
 
+  @spec put_picture(id, params, file) :: success | error
+  def put_picture(id, params, file) do
+    _post(id, :photos, params, {:multipart, [{:file, file}]})
+  end
+
+
   @spec put_wall_post(id, String.t, params, Map.t) :: success | error
   def put_wall_post(id, message, params, attachment) do
-    if Map.has_key?(:properties) and attachment[:properties] do
-      attachment = Map.put(attachment, :properties, Poison.encode!(attachment[:properties]))
+    attachment = if Map.has_key?(attachment, :properties) and attachment[:properties] do
+      Map.put(attachment, :properties, Poison.encode!(attachment[:properties]))
+    else
+      attachment
     end
+
     attachment = Map.put(attachment, :message, message)
 
     put_connections(id, :feed, params, attachment)
@@ -306,9 +316,12 @@ defmodule Exfacebook.Api do
 
   @spec put_wall_post(api, id, String.t, params, Map.t) :: Map.t
   def put_wall_post(api, id, message, params, attachment) do
-    if Map.has_key?(:properties) and attachment[:properties] do
-      attachment = Map.put(attachment, :properties, Poison.encode!(attachment[:properties]))
+    attachment = if Map.has_key?(attachment, :properties) and attachment[:properties] do
+      Map.put(attachment, :properties, Poison.encode!(attachment[:properties]))
+    else
+      attachment
     end
+
     attachment = Map.put(attachment, :message, message)
 
     put_connections(api, id, :feed, params, attachment)
