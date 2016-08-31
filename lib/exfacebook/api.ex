@@ -53,7 +53,6 @@ defmodule Exfacebook.Api do
     params = params |> Map.delete(:access_token)
     _get(Config.id, :subscriptions, params)
   end
-  def list_subscriptions(_, _), do: raise "not implemented for batch requests"
 
 
   @doc ~S"""
@@ -73,7 +72,6 @@ defmodule Exfacebook.Api do
 
     _post(:subscriptions, params, {:form, []})
   end
-  def subscribe(_, _, _, _, _), do: raise "not implemented for batch requests"
 
   @doc ~S"""
   `id` - id of object to unsubscribe, in case if developer passed `nil`
@@ -84,7 +82,6 @@ defmodule Exfacebook.Api do
     params = %{object: id}
     _delete(:subscriptions, params)
   end
-  def unsubscribe(_, _), do: raise "not implemented for batch requests"
 
   defp _assign_verify_token(params, nil), do: params
   defp _assign_verify_token(params, token), do: Map.put(params, :verify_token, token)

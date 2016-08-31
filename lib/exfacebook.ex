@@ -110,9 +110,9 @@ defmodule Exfacebook do
     ```
 
   """
-  define_api :list_subscriptions, :get, [params]
-  define_api :subscribe, :post, [object, fields, callback_url, verify_token]
-  define_api :unsubscribe, :post, [object]
+  define_api :list_subscriptions, :get, [params], [batch: false]
+  define_api :subscribe, :post, [object, fields, callback_url, verify_token], [batch: false]
+  define_api :unsubscribe, :post, [object], [batch: false]
 
 
   @doc ~S"""
@@ -156,9 +156,8 @@ defmodule Exfacebook do
     ```
   """
   define_api :get_picture_data, :get, [id, params]
-  define_api :get_page_access_token, :get, [id, params]
-  define_api :put_picture, :post, [id, params, file]
-  define_api :put_video, :post, [id, params, file]
+  define_api :put_picture, :post, [id, params, file], [batch: false]
+  define_api :put_video, :post, [id, params, file], [batch: false]
   define_api :put_comment, :post, [id, params, message]
   define_api :put_wall_post, :post, [id, message, params, attachment]
   define_api :put_like, :post, [id, params]
