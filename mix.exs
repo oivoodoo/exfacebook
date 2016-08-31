@@ -3,7 +3,7 @@ defmodule Exfacebook.Mixfile do
 
   def project do
     [app: :exfacebook,
-     version: "0.0.6",
+     version: "0.0.7",
      elixir: "~> 1.2",
      description: description,
      package: package,

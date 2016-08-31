@@ -13,6 +13,8 @@ defmodule Exfacebook.Api do
   @type api :: List.t
   @type body :: Map.t
   @type params :: Map.t
+  @type file :: String.t | Map.t
+  @type access_token :: String.t
 
   @moduledoc ~S"""
   Basic functions for accessing Facebook API.
@@ -69,7 +71,7 @@ defmodule Exfacebook.Api do
       fields: fields,
     } |> _assign_verify_token(verify_token)
 
-    _post(:subscriptions, params, [])
+    _post(:subscriptions, params, {:form, []})
   end
   def subscribe(_, _, _, _, _), do: raise "not implemented for batch requests"
 
@@ -136,7 +138,7 @@ defmodule Exfacebook.Api do
       access_token: params.access_token,
     ]
 
-    Http.post("https://graph.facebook.com", data) |> _handle_batch
+    Http.post("https://graph.facebook.com", {:form, data}) |> _handle_batch
   end
 
   defp _handle_batch({:error, _} = s), do: s
@@ -181,7 +183,7 @@ defmodule Exfacebook.Api do
   @spec put_connections(id, name, params, body) :: success | error
   def put_connections(id, name, params, body \\ %{}) do
     body = Map.to_list(body)
-    _post(id, name, params, body)
+    _post(id, name, params, {:form, body})
   end
 
 
@@ -236,6 +238,135 @@ defmodule Exfacebook.Api do
     relative_url = _make_url_batch(params, id)
     api ++ [%{"method" => "DELETE", "relative_url" => relative_url}]
   end
+
+
+  @doc """
+  Returns hash of image data for passed id.
+  """
+  @spec get_picture_data(id, params) :: success | error
+  def get_picture_data(id, params) do
+    params = Map.put_new(params, :redirect, false)
+    _get(id, :picture, params)
+  end
+
+  @spec get_picture_data(api, id, params) :: Map.t
+  def get_picture_data(api, id, params) do
+    params = Map.put_new(params, :redirect, false)
+    relative_url = _make_url_batch(params, "#{id}/picture")
+    api ++ [%{"method" => "GET", "relative_url" => relative_url}]
+  end
+
+
+  @spec get_page_access_token(id, params) :: success | error
+  def get_page_access_token(id, params) do
+    params = Map.put(params, :fields, "access_token")
+    _get(id, params)
+  end
+
+  @spec get_page_access_token(api, id, params) :: Map.t
+  def get_page_access_token(api, id, params) do
+    params = Map.put(params, :fields, "access_token")
+    relative_url = _make_url_batch(params, id)
+    api ++ [%{"method" => "GET", "relative_url" => relative_url}]
+  end
+
+
+  @spec put_like(id, params) :: success | error
+  def put_like(id, params), do: put_connections(id, :likes, params, %{})
+
+  @spec put_like(api, id, params) :: Map.t
+  def put_like(api, id, params), do: put_connections(api, id, :likes, params, %{})
+
+
+  @spec put_comment(id, params, String.t) :: success | error
+  def put_comment(id, params, message) do
+    put_connections(id, :comments, params, %{message: message})
+  end
+
+  @spec put_comment(api, id, params, String.t) :: Map.t
+  def put_comment(api, id, params, message) do
+    put_connections(api, id, :comments, params, %{message: message})
+  end
+
+
+  @spec delete_like(id, params) :: success | error
+  def delete_like(id, params), do: delete_connections(id, :likes, params)
+
+  @spec delete_like(api, id, params) :: success | error
+  def delete_like(api, id, params), do: delete_connections(api, id, :likes, params)
+
+
+  @spec put_picture(id, params, file) :: success | error
+  def put_picture(id, params, {:file, file}) do
+    _post(id, :photos, params, {:multipart, [{:file, file}]})
+  end
+  def put_picture(id, params, {:url, url}) do
+    _post(id, :photos, params, {:multipart, [{:url, url}]})
+  end
+  def put_picture(id, params, file) do
+    put_picture(id, params, {:file, file})
+  end
+
+
+  @spec put_video(id, params, file) :: success | error
+  def put_video(id, params, {:file, file}) do
+    _post(id, :videos, params, {:multipart, [{:file, file}]})
+  end
+  def put_video(id, params, {:url, url}) do
+    _post(id, :videos, params, {:multipart, [{:file_url, url}]})
+  end
+  def put_video(id, params, file) do
+    put_video(id, params, {:file, file})
+  end
+
+
+  @spec put_wall_post(id, String.t, params, Map.t) :: success | error
+  def put_wall_post(id, message, params, attachment) do
+    attachment = if Map.has_key?(attachment, :properties) and attachment[:properties] do
+      Map.put(attachment, :properties, Poison.encode!(attachment[:properties]))
+    else
+      attachment
+    end
+
+    attachment = Map.put(attachment, :message, message)
+
+    put_connections(id, :feed, params, attachment)
+  end
+
+  @spec put_wall_post(api, id, String.t, params, Map.t) :: Map.t
+  def put_wall_post(api, id, message, params, attachment) do
+    attachment = if Map.has_key?(attachment, :properties) and attachment[:properties] do
+      Map.put(attachment, :properties, Poison.encode!(attachment[:properties]))
+    else
+      attachment
+    end
+
+    attachment = Map.put(attachment, :message, message)
+
+    put_connections(api, id, :feed, params, attachment)
+  end
+
+
+  @spec exchange_access_token_info(access_token) :: success | error
+  def exchange_access_token_info(access_token) do
+    params = %{
+      client_id: Config.id,
+      client_secret: Config.secret,
+      grant_type: "fb_exchange_token",
+      fb_exchange_token: access_token
+    }
+
+    _get(:oauth, :access_token, params)
+  end
+
+  @spec exchange_access_token(access_token) :: success | error
+  def exchange_access_token(access_token) do
+    access_token
+    |> exchange_access_token_info
+    |> _parse_exchange_access_token
+  end
+  defp _parse_exchange_access_token({:ok, %{"access_token" => access_token}}), do: access_token
+  defp _parse_exchange_access_token(_), do: nil
 
 
   defp _make_url_batch(params, path) do
