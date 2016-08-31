@@ -87,5 +87,5 @@ It should produce logging messages about the objects and attributes from feed an
 - [x] wrap api by GenServer for put operations as cast and get as call
 - [x] realtime updates subscribe, list_subscriptions, unsubscribe, meet_challenge
 - [x] add delete_* methods
-- [ ] add put video and image
-- [ ] add get exchange token
+- [x] add put video and image
+- [x] add get exchange token
