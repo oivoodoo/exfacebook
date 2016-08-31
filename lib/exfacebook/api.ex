@@ -13,7 +13,8 @@ defmodule Exfacebook.Api do
   @type api :: List.t
   @type body :: Map.t
   @type params :: Map.t
-  @type file :: String.t | binary
+  @type file :: String.t | Map.t
+  @type access_token :: String.t
 
   @moduledoc ~S"""
   Basic functions for accessing Facebook API.
@@ -344,6 +345,28 @@ defmodule Exfacebook.Api do
 
     put_connections(api, id, :feed, params, attachment)
   end
+
+
+  @spec exchange_access_token_info(access_token) :: success | error
+  def exchange_access_token_info(access_token) do
+    params = %{
+      client_id: Config.id,
+      client_secret: Config.secret,
+      grant_type: "fb_exchange_token",
+      fb_exchange_token: access_token
+    }
+
+    _get(:oauth, :access_token, params)
+  end
+
+  @spec exchange_access_token(access_token) :: success | error
+  def exchange_access_token(access_token) do
+    access_token
+    |> exchange_access_token_info
+    |> _parse_exchange_access_token
+  end
+  defp _parse_exchange_access_token({:ok, %{"access_token" => access_token}}), do: access_token
+  defp _parse_exchange_access_token(_), do: nil
 
 
   defp _make_url_batch(params, path) do
