@@ -167,13 +167,13 @@ defmodule Exfacebook do
   @doc ~S"""
   Fetches an access token with extended expiration time (ignoring expiration and other info).
   """
-  define_api :exchange_access_token, :get, [access_token]
+  define_api :exchange_access_token, :get, [access_token], [batch: false]
 
   @doc ~S"""
   Fetches an access_token with extended expiration time, along with any other information provided by Facebook.
   See https://developers.facebook.com/docs/offline-access-deprecation/#extend_token (search for fb_exchange_token).
   """
-  define_api :exchange_access_token_info, :get, [access_token]
+  define_api :exchange_access_token_info, :get, [access_token], [batch: false]
 
 
   @doc ~S"""
