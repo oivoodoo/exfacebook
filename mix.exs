@@ -1,7 +1,7 @@
 defmodule Exfacebook.Mixfile do
   use Mix.Project
 
-  @version "2.0.4"
+  @version "0.0.9"
 
   def project do
     [app: :exfacebook,
