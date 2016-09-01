@@ -6,3 +6,4 @@ erl_crash.dump
 .python-version
 doc/
 .envrc
+docs/

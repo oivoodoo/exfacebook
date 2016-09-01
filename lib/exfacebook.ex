@@ -108,7 +108,6 @@ defmodule Exfacebook do
     ```elixir
     Exfacebook.Api.unsubscribe("id-1")
     ```
-
   """
   define_api :list_subscriptions, :get, [params], [batch: false]
   define_api :subscribe, :post, [object, fields, callback_url, verify_token], [batch: false]
@@ -128,7 +127,6 @@ defmodule Exfacebook do
     ```
 
     * `delete_object` - delete item from Facebook data
-
     ```elixir
     {:ok, response} = Exfacebook.Api.delete_object("item-id")
     ```
@@ -160,6 +158,21 @@ defmodule Exfacebook do
   define_api :put_video, :post, [id, params, file], [batch: false]
   define_api :put_comment, :post, [id, params, message]
   define_api :put_wall_post, :post, [id, message, params, attachment]
+
+  @doc ~S"""
+  Make likes or delete this action for specific post:
+
+  ## Examples:
+    * `put_like` - like object, params should include `access_token`
+    ```elixir
+    {:ok, response} = Exfacebook.Api.put_like(:me, params)
+    ```
+
+    * `delete_like` - unlike object, params should include `access_token`
+    ```elixir
+    {:ok, response} = Exfacebook.Api.delete_like(:me, params)
+    ```
+  """
   define_api :put_like, :post, [id, params]
   define_api :delete_like, :delete, [id, params]
 

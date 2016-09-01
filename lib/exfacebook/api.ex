@@ -101,6 +101,7 @@ defmodule Exfacebook.Api do
   def next_page({:ok, %{"paging" => %{"next" => url}}}), do: _get(url)
   def next_page({:ok, _response}), do: {:ok, %{"data" => []}}
 
+  @doc false
   @spec next_page(api, success | error) :: success | error
   def next_page(api, {:error, _error}), do: api
   def next_page(api, {:ok, %{"paging" => %{"next" => url}}}) do
@@ -116,6 +117,7 @@ defmodule Exfacebook.Api do
   def prev_page({:ok, %{"paging" => %{"previous" => url}}}), do: _get(url)
   def prev_page({:ok, _response}), do: {:ok, %{"data" => []}}
 
+  @doc false
   @spec prev_page(api, success | error) :: success | error
   def prev_page(api, {:error, _error}), do: api
   def prev_page(api, {:ok, %{"paging" => %{"previous" => url}}}) do
@@ -246,6 +248,7 @@ defmodule Exfacebook.Api do
     _get(id, :picture, params)
   end
 
+  @doc false
   @spec get_picture_data(api, id, params) :: Map.t
   def get_picture_data(api, id, params) do
     params = Map.put_new(params, :redirect, false)
@@ -254,12 +257,14 @@ defmodule Exfacebook.Api do
   end
 
 
+  @doc false
   @spec get_page_access_token(id, params) :: success | error
   def get_page_access_token(id, params) do
     params = Map.put(params, :fields, "access_token")
     _get(id, params)
   end
 
+  @doc false
   @spec get_page_access_token(api, id, params) :: Map.t
   def get_page_access_token(api, id, params) do
     params = Map.put(params, :fields, "access_token")
@@ -268,55 +273,72 @@ defmodule Exfacebook.Api do
   end
 
 
+  @doc false
   @spec put_like(id, params) :: success | error
   def put_like(id, params), do: put_connections(id, :likes, params, %{})
 
+  @doc false
   @spec put_like(api, id, params) :: Map.t
   def put_like(api, id, params), do: put_connections(api, id, :likes, params, %{})
 
 
+  @doc false
   @spec put_comment(id, params, String.t) :: success | error
   def put_comment(id, params, message) do
     put_connections(id, :comments, params, %{message: message})
   end
 
+  @doc false
   @spec put_comment(api, id, params, String.t) :: Map.t
   def put_comment(api, id, params, message) do
     put_connections(api, id, :comments, params, %{message: message})
   end
 
 
+  @doc false
   @spec delete_like(id, params) :: success | error
   def delete_like(id, params), do: delete_connections(id, :likes, params)
 
+  @doc false
   @spec delete_like(api, id, params) :: success | error
   def delete_like(api, id, params), do: delete_connections(api, id, :likes, params)
 
 
+  @doc false
   @spec put_picture(id, params, file) :: success | error
   def put_picture(id, params, {:file, file}) do
     _post(id, :photos, params, {:multipart, [{:file, file}]})
   end
+
+  @doc false
   def put_picture(id, params, {:url, url}) do
     _post(id, :photos, params, {:multipart, [{:url, url}]})
   end
+
+  @doc false
   def put_picture(id, params, file) do
     put_picture(id, params, {:file, file})
   end
 
 
+  @doc false
   @spec put_video(id, params, file) :: success | error
   def put_video(id, params, {:file, file}) do
     _post(id, :videos, params, {:multipart, [{:file, file}]})
   end
+
+  @doc false
   def put_video(id, params, {:url, url}) do
     _post(id, :videos, params, {:multipart, [{:file_url, url}]})
   end
+
+  @doc false
   def put_video(id, params, file) do
     put_video(id, params, {:file, file})
   end
 
 
+  @doc false
   @spec put_wall_post(id, String.t, params, Map.t) :: success | error
   def put_wall_post(id, message, params, attachment) do
     attachment = if Map.has_key?(attachment, :properties) and attachment[:properties] do
@@ -330,6 +352,7 @@ defmodule Exfacebook.Api do
     put_connections(id, :feed, params, attachment)
   end
 
+  @doc false
   @spec put_wall_post(api, id, String.t, params, Map.t) :: Map.t
   def put_wall_post(api, id, message, params, attachment) do
     attachment = if Map.has_key?(attachment, :properties) and attachment[:properties] do
@@ -344,6 +367,7 @@ defmodule Exfacebook.Api do
   end
 
 
+  @doc false
   @spec exchange_access_token_info(access_token) :: success | error
   def exchange_access_token_info(access_token) do
     params = %{
@@ -356,6 +380,7 @@ defmodule Exfacebook.Api do
     _get(:oauth, :access_token, params)
   end
 
+  @doc false
   @spec exchange_access_token(access_token) :: success | error
   def exchange_access_token(access_token) do
     access_token

@@ -1,9 +1,11 @@
 defmodule Exfacebook.Mixfile do
   use Mix.Project
 
+  @version "2.0.4"
+
   def project do
     [app: :exfacebook,
-     version: "0.0.9",
+     version: @version,
      elixir: "~> 1.2",
      description: description,
      package: package,
@@ -12,7 +14,10 @@ defmodule Exfacebook.Mixfile do
      preferred_cli_env: [
        vcr: :test, "vcr.delete": :test, "vcr.check": :test, "vcr.show": :test
      ],
-     deps: deps]
+     deps: deps,
+     docs: [source_ref: "v#{@version}", main: "Exfacebook",
+            canonical: "http://hexdocs.pm/exfacebook",
+            source_url: "https://github.com/oivoodoo/exfacebook"]]
   end
 
   defp description do
@@ -58,6 +63,7 @@ defmodule Exfacebook.Mixfile do
       {:ex_unit_notifier, "~> 0.1", only: :test},
       {:exvcr, "~> 0.7", only: :test},
       {:ex_doc, ">= 0.0.0", only: :dev},
+      {:inch_ex, "~> 0.5", only: :dev}
     ]
   end
 end
