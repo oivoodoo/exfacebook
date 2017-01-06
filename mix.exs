@@ -57,7 +57,7 @@ defmodule Exfacebook.Mixfile do
   defp deps do
     [
       {:httpoison, "~> 0.8.1"},
-      {:poison, "~> 1.5"},
+      {:poison, "~> 1.5 or ~> 2.0 or ~> 3.0"},
       {:mix_test_watch, "~> 0.2", only: :dev},
       {:dogma, "~> 0.1", only: [:dev, :test]},
       {:ex_unit_notifier, "~> 0.1", only: :test},
