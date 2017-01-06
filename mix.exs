@@ -7,14 +7,14 @@ defmodule Exfacebook.Mixfile do
     [app: :exfacebook,
      version: @version,
      elixir: "~> 1.2",
-     description: description,
-     package: package,
+     description: description(),
+     package: package(),
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
      preferred_cli_env: [
        vcr: :test, "vcr.delete": :test, "vcr.check": :test, "vcr.show": :test
      ],
-     deps: deps,
+     deps: deps(),
      docs: [source_ref: "v#{@version}", main: "Exfacebook",
             canonical: "http://hexdocs.pm/exfacebook",
             source_url: "https://github.com/oivoodoo/exfacebook"]]
