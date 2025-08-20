@@ -1,10 +1,10 @@
-use Mix.Config
+import Config
 
 config :exfacebook,
   api_version: "v2.6"
 
 if Mix.env == :dev do
-  config :mix_test_watch, tasks: ~w(test dogma), clear: true
+  config :mix_test_watch, tasks: ~w(test credo), clear: true
 
   config :exfacebook,
     id: System.get_env("FACEBOOK_APP_ID"),

@@ -6,7 +6,7 @@ defmodule Exfacebook.Mixfile do
   def project do
     [app: :exfacebook,
      version: @version,
-     elixir: "~> 1.2",
+     elixir: "~> 1.12",
      description: description(),
      package: package(),
      build_embedded: Mix.env == :prod,
@@ -56,14 +56,16 @@ defmodule Exfacebook.Mixfile do
   # Type "mix help deps" for more examples and options
   defp deps do
     [
-      {:httpoison, "~> 0.9"},
-      {:poison, "~> 1.5 or ~> 2.0 or ~> 3.0"},
-      {:mix_test_watch, "~> 0.2", only: :dev},
-      {:dogma, "~> 0.1", only: [:dev, :test]},
+      # Core HTTP dependencies
+      {:httpoison, "~> 1.8"},  # Updated from ~> 0.9
+      {:poison, "~> 4.0"},     # Updated from ~> 1.5-3.0
+      
+      # Development and testing tools
+      {:mix_test_watch, "~> 1.0", only: :dev},       # Updated from ~> 0.2
+      {:credo, "~> 1.6", only: [:dev, :test]},       # Replaces dogma
       {:ex_unit_notifier, "~> 0.1", only: :test},
-      {:exvcr, "~> 0.7", only: :test},
-      {:ex_doc, ">= 0.0.0", only: :dev},
-      {:inch_ex, "~> 0.5", only: :dev}
+      {:exvcr, "~> 0.14", only: :test},              # Updated from ~> 0.7
+      {:ex_doc, "~> 0.29", only: :dev, runtime: false}  # Updated from >= 0.0.0
     ]
   end
 end
