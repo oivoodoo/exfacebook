@@ -19,10 +19,11 @@ defmodule BatchTest do
     use_cassette "batch#get_object" do
       pid = __MODULE__
 
-      response = batch %{access_token: access_token}, fn(api) ->
-        api = api |> get_object(pid, :me, %{fields: "id, name"})
-        api
-      end
+      response =
+        batch(%{access_token: access_token()}, fn api ->
+          api = api |> get_object(pid, :me, %{fields: "id, name"})
+          api
+        end)
 
       [{:ok, %{"id" => id, "name" => name}}] = response
       assert id == "127016687734698"
@@ -34,21 +35,25 @@ defmodule BatchTest do
     use_cassette "batch#get_object_and_get_connections" do
       pid = __MODULE__
 
-      response = batch %{access_token: access_token}, fn(api) ->
-        api = api |> get_object(pid, :me, %{fields: "id, name"})
-        assert api == [
-          %{"method" => "GET", "relative_url" => "/v2.6/me?fields=id%2c+name"}
-        ]
+      response =
+        batch(%{access_token: access_token()}, fn api ->
+          api = api |> get_object(pid, :me, %{fields: "id, name"})
 
-        api = api |> get_connections(pid, :me, :feed, %{fields: "id, name"})
-        assert api == [
-          %{"method" => "GET", "relative_url" => "/v2.6/me?fields=id%2c+name"},
-          %{"method" => "GET", "relative_url" => "/v2.6/me/feed?fields=id%2c+name"},
-        ]
-        api
-      end
+          assert api == [
+                   %{"method" => "GET", "relative_url" => "/v26.0/me?fields=id%2C+name"}
+                 ]
 
-      [{:ok, %{"data" => collection}}, {:ok, %{"id" => id, "name" => name}}] = response
+          api = api |> get_connections(pid, :me, :feed, %{fields: "id, name"})
+
+          assert api == [
+                   %{"method" => "GET", "relative_url" => "/v26.0/me?fields=id%2C+name"},
+                   %{"method" => "GET", "relative_url" => "/v26.0/me/feed?fields=id%2C+name"}
+                 ]
+
+          api
+        end)
+
+      [{:ok, %{"id" => id, "name" => name}}, {:ok, %{"data" => collection}}] = response
       assert id == "127016687734698"
       assert name == "Richard Alabgiajbgak Thurnman"
       assert Enum.count(collection) == 0
@@ -59,20 +64,25 @@ defmodule BatchTest do
     use_cassette "batch#get_object_and_get_connections_and_error" do
       pid = __MODULE__
 
-      response = batch %{access_token: access_token}, fn(api) ->
-        api = api |> get_object(pid, :me, %{fields: "id, name"})
-        assert api == [%{"method" => "GET", "relative_url" => "/v2.6/me?fields=id%2c+name"}]
+      response =
+        batch(%{access_token: access_token()}, fn api ->
+          api = api |> get_object(pid, :me, %{fields: "id, name"})
+          assert api == [%{"method" => "GET", "relative_url" => "/v26.0/me?fields=id%2C+name"}]
 
-        api = api |> get_connections(pid, "unknown-page", :posts, %{fields: "id, name"})
-        assert api == [
-          %{"method" => "GET", "relative_url" => "/v2.6/me?fields=id%2c+name"},
-          %{"method" => "GET", "relative_url" => "/v2.6/unknown-page/posts?fields=id%2c+name"}
-        ]
+          api = api |> get_connections(pid, "unknown-page", :posts, %{fields: "id, name"})
 
-        api
-      end
+          assert api == [
+                   %{"method" => "GET", "relative_url" => "/v26.0/me?fields=id%2C+name"},
+                   %{
+                     "method" => "GET",
+                     "relative_url" => "/v26.0/unknown-page/posts?fields=id%2C+name"
+                   }
+                 ]
 
-      [{:error, error}, {:ok, %{"id" => id, "name" => name}}] = response
+          api
+        end)
+
+      [{:ok, %{"id" => id, "name" => name}}, {:error, error}] = response
       assert id == "127016687734698"
       assert name == "Richard Alabgiajbgak Thurnman"
 
@@ -86,16 +96,17 @@ defmodule BatchTest do
     use_cassette "batch#next_prev_get_connections" do
       pid = __MODULE__
 
-      response = Exfacebook.get_connections(pid, :me, :feed, %{access_token: access_token})
+      response = Exfacebook.get_connections(pid, :me, :feed, %{access_token: access_token()})
 
-      response = batch %{access_token: access_token}, fn(api) ->
-        api = api |> next_page(pid, response)
-        api = api |> prev_page(pid, response)
+      response =
+        batch(%{access_token: access_token()}, fn api ->
+          api = api |> next_page(pid, response)
+          api = api |> prev_page(pid, response)
 
-        # no data
-        assert api == []
-        api
-      end
+          # no data
+          assert api == []
+          api
+        end)
 
       [] = response
     end
@@ -107,22 +118,31 @@ defmodule BatchTest do
 
       response = Exfacebook.get_connections(pid, "majesticcasual", :posts, %{})
 
-      response = batch fn(api) ->
-        api = api |> next_page(pid, response)
-        api = api |> prev_page(pid, response)
+      response =
+        batch(fn api ->
+          api = api |> next_page(pid, response)
+          api = api |> prev_page(pid, response)
 
-        # no data
-        assert api == [
-          %{"method" => "GET", "relative_url" => "/v2.6/221646591235273/posts?limit=25&access_token=217873215035447|4e2d3c9835e99d8dc7c93d62cc16d159&until=1468086000&__paging_token=enc_AdCYZC3qrd3imNKJzRp8vyDGk84d7CRwoBSARcokLJa5K0bvD1CCZCqXZCGRIqqo11ax0EjtjPL99C0CO1BoatlCcshaIWAhcmrZCRcNhTZADmZCZC2oQZDZD"},
-          %{"method" => "GET", "relative_url" => "/v2.6/221646591235273/posts?limit=25&since=1470591600&access_token=217873215035447|4e2d3c9835e99d8dc7c93d62cc16d159&__paging_token=enc_AdBzj3BvhRyYQ4CiqFQvFrmvCz2OQV3vNMZBXZA9G3YfJmLOdK6lbcNQ8Nyage5WvxwZB8QNDgz5b4y1hZA2FWL0RZCcJjMBXDB6pvd5u43sgCYNhZBwZDZD&__previous=1"}
-        ]
+          # no data
+          assert api == [
+                   %{
+                     "method" => "GET",
+                     "relative_url" =>
+                       "/v26.0/221646591235273/posts?limit=25&access_token=217873215035447|4e2d3c9835e99d8dc7c93d62cc16d159&until=1468086000&__paging_token=enc_AdCYZC3qrd3imNKJzRp8vyDGk84d7CRwoBSARcokLJa5K0bvD1CCZCqXZCGRIqqo11ax0EjtjPL99C0CO1BoatlCcshaIWAhcmrZCRcNhTZADmZCZC2oQZDZD"
+                   },
+                   %{
+                     "method" => "GET",
+                     "relative_url" =>
+                       "/v26.0/221646591235273/posts?limit=25&since=1470591600&access_token=217873215035447|4e2d3c9835e99d8dc7c93d62cc16d159&__paging_token=enc_AdBzj3BvhRyYQ4CiqFQvFrmvCz2OQV3vNMZBXZA9G3YfJmLOdK6lbcNQ8Nyage5WvxwZB8QNDgz5b4y1hZA2FWL0RZCcJjMBXDB6pvd5u43sgCYNhZBwZDZD&__previous=1"
+                   }
+                 ]
 
-        api
-      end
+          api
+        end)
 
       [{:ok, %{"data" => collection1}}, {:ok, %{"data" => collection2}}] = response
-      assert Enum.count(collection1) == 0   # prev
-      assert Enum.count(collection2) == 25  # next
+      assert Enum.count(collection1) == 25
+      assert Enum.count(collection2) == 0
     end
   end
 end

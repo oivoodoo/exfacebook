@@ -4,7 +4,6 @@ defmodule PutConnectionsTest do
   use ExUnit.Case, async: false
   use ExVCR.Mock, adapter: ExVCR.Adapter.Hackney
 
-
   setup_all do
     {:ok, _} = Exfacebook.start_link(name: __MODULE__)
     ExVCR.Config.cassette_library_dir("fixture/vcr_cassettes")

@@ -4,6 +4,8 @@ defmodule Exfacebook.ConfigTest do
   alias Exfacebook.Config
 
   test "config reader" do
-    assert Config.api_version == "v2.6"
+    assert Config.api_version() == "v26.0"
+    assert Config.graph_url() == "https://graph.facebook.com"
+    assert Config.graph_video_url() == "https://graph-video.facebook.com"
   end
 end

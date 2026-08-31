@@ -16,7 +16,7 @@ defmodule ExfacebookTest do
     pid = __MODULE__
 
     use_cassette "get_object#me_fields_id_name" do
-      params = %{access_token: access_token, fields: "id,name"}
+      params = %{access_token: access_token(), fields: "id,name"}
       {:ok, %{"id" => id, "name" => name}} = Exfacebook.get_object(pid, :me, params)
       assert id == "127016687734698"
       assert name == "Richard Alabgiajbgak Thurnman"
@@ -27,33 +27,33 @@ defmodule ExfacebookTest do
     pid = __MODULE__
 
     use_cassette "get_connections#majesticcasual_fields_id_name" do
-      params = %{access_token: access_token, fields: "id,name"}
-      {:ok, %{"data" => collection}} = Exfacebook.get_connections(pid, "majesticcasual", :posts, params)
+      params = %{access_token: access_token(), fields: "id,name"}
+
+      {:ok, %{"data" => collection}} =
+        Exfacebook.get_connections(pid, "majesticcasual", :posts, params)
+
       assert Enum.count(collection) == 25
     end
   end
 
   test "next/prev for authenticated user for feed" do
     pid = __MODULE__
-    params = %{access_token: access_token, fields: "id,name", limit: 25}
+    params = %{access_token: access_token(), fields: "id,name", limit: 25}
 
-    use_cassette "get_connections#majesticcasual_fields_id_name" do
-      {:ok, %{"data" => [%{"id" => id1} | _] = collection1}} = response1 = Exfacebook.get_connections(pid, "majesticcasual", :posts, params)
+    use_cassette "get_connections#majesticcasual_next_prev_combined" do
+      {:ok, %{"data" => [%{"id" => id1} | _] = collection1}} =
+        response1 = Exfacebook.get_connections(pid, "majesticcasual", :posts, params)
+
       assert Enum.count(collection1) == 25
 
-      use_cassette "get_connections#next_majesticcasual_fields_id_name" do
-        {:ok, %{"data" => [%{"id" => id2} | _] = collection2}} = response2 = Exfacebook.next_page(pid, response1)
-         assert Enum.count(collection2) == 25
-         assert id1 != id2
+      {:ok, %{"data" => [%{"id" => id2} | _] = collection2}} =
+        response2 = Exfacebook.next_page(pid, response1)
 
-         use_cassette "get_connections#prev_majesticcasual_fields_id_name" do
-           {:ok, %{"data" => [%{"id" => id3} | _] = collection3}} = Exfacebook.prev_page(pid, response2)
+      assert Enum.count(collection2) == 25
+      assert id1 != id2
 
-           # Facebook API returns 24 items
-           # assert Enum.count(collection3) == 25
-           # assert id1 == id3
-         end
-      end
+      {:ok, %{"data" => [%{"id" => _id3} | _] = _collection3}} =
+        Exfacebook.prev_page(pid, response2)
     end
   end
 end

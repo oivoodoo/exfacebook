@@ -3,20 +3,20 @@ defmodule Exfacebook do
   use Exfacebook.Macros
 
   @moduledoc ~S"""
-  Exfacebook implements Graph Api:
+  Exfacebook implements Graph API:
 
     * `Exfacebook.Api` - graph calls using access token to Facebook Graph API,
-    depends on respnse it returns decoded to JSON values.
+    depends on response it returns decoded to JSON values.
 
     * `Exfacebook.Config` - specify `api_version` and http requests for hackney.
 
   Configuration example(optional variables):
 
       config :exfacebook,
-        api_version: "v2.6",
+        api_version: "v26.0",
         http_options: [recv_timeout: :infinity],
         id: "your_app_id_optional",
-        secret: "your_app_secret_optiona"
+        secret: "your_app_secret_optional"
 
   How to use API?
 
@@ -57,7 +57,7 @@ defmodule Exfacebook do
     * `put_connections` - update actions in facebook, example creates the new message in feed:
 
     ```elixir
-      Exfacebook.put_connections(:me, :feed,
+      Exfacebook.put_connections(pid, :me, :feed,
          %{access_token: "access-token"}, %{message: "hello"})
     ```
 
@@ -67,12 +67,14 @@ defmodule Exfacebook do
     GenServer.start_link(__MODULE__, [], options)
   end
 
-  define_api :get_object, :get, [id, params]
-  define_api :get_connections, :get, [id, name, params]
-  define_api :next_page, :get, [response]
-  define_api :prev_page, :get, [response]
-  define_api :put_connections, :post, [id, name, params, body]
+  @impl true
+  def init(state), do: {:ok, state}
 
+  define_api(:get_object, :get, [id, params])
+  define_api(:get_connections, :get, [id, name, params])
+  define_api(:next_page, :get, [response])
+  define_api(:prev_page, :get, [response])
+  define_api(:put_connections, :post, [id, name, params, body])
 
   @doc """
   Realtime updates using subscriptions API
@@ -109,10 +111,9 @@ defmodule Exfacebook do
     Exfacebook.Api.unsubscribe("id-1")
     ```
   """
-  define_api :list_subscriptions, :get, [params], [batch: false]
-  define_api :subscribe, :post, [object, fields, callback_url, verify_token], [batch: false]
-  define_api :unsubscribe, :post, [object], [batch: false]
-
+  define_api(:list_subscriptions, :get, [params], batch: false)
+  define_api(:subscribe, :post, [object, fields, callback_url, verify_token], batch: false)
+  define_api(:unsubscribe, :delete, [object], batch: false)
 
   @doc ~S"""
   You can use `delete_object` and `delete_connections` passing pid or directly
@@ -131,9 +132,8 @@ defmodule Exfacebook do
     {:ok, response} = Exfacebook.Api.delete_object("item-id")
     ```
   """
-  define_api :delete_object, :delete, [id, params]
-  define_api :delete_connections, :delete, [id, name, params]
-
+  define_api(:delete_object, :delete, [id, params])
+  define_api(:delete_connections, :delete, [id, name, params])
 
   @doc ~S"""
   API for easy accessing basic Facebook API functions like get avatar image,
@@ -153,11 +153,11 @@ defmodule Exfacebook do
     {:ok, response} = Exfacebook.Api.put_video(:me, params, {:url, "http://www.example.com/file.mp4"})
     ```
   """
-  define_api :get_picture_data, :get, [id, params]
-  define_api :put_picture, :post, [id, params, file], [batch: false]
-  define_api :put_video, :post, [id, params, file], [batch: false]
-  define_api :put_comment, :post, [id, params, message]
-  define_api :put_wall_post, :post, [id, message, params, attachment]
+  define_api(:get_picture_data, :get, [id, params])
+  define_api(:put_picture, :post, [id, params, file], batch: false)
+  define_api(:put_video, :post, [id, params, file], batch: false)
+  define_api(:put_comment, :post, [id, params, message])
+  define_api(:put_wall_post, :post, [id, message, params, attachment])
 
   @doc ~S"""
   Make likes or delete this action for specific post:
@@ -173,21 +173,19 @@ defmodule Exfacebook do
     {:ok, response} = Exfacebook.Api.delete_like(:me, params)
     ```
   """
-  define_api :put_like, :post, [id, params]
-  define_api :delete_like, :delete, [id, params]
-
+  define_api(:put_like, :post, [id, params])
+  define_api(:delete_like, :delete, [id, params])
 
   @doc ~S"""
   Fetches an access token with extended expiration time (ignoring expiration and other info).
   """
-  define_api :exchange_access_token, :get, [access_token], [batch: false]
+  define_api(:exchange_access_token, :get, [access_token], batch: false)
 
   @doc ~S"""
   Fetches an access_token with extended expiration time, along with any other information provided by Facebook.
-  See https://developers.facebook.com/docs/offline-access-deprecation/#extend_token (search for fb_exchange_token).
+  See https://developers.facebook.com/docs/facebook-login/guides/access-tokens/get-long-lived
   """
-  define_api :exchange_access_token_info, :get, [access_token], [batch: false]
-
+  define_api(:exchange_access_token_info, :get, [access_token], batch: false)
 
   @doc ~S"""
   Passing prepared params for batch processing using Facebook API.
@@ -198,5 +196,13 @@ defmodule Exfacebook do
   def batch(params, callback) do
     callback.([]) |> Api.batch(params)
   end
+
   def batch(callback), do: batch(%{}, callback)
+
+  @doc """
+  Handle a Webhooks verification request. See `Exfacebook.Api.meet_challenge/2`.
+  """
+  def meet_challenge(params, verify_token) do
+    Api.meet_challenge(params, verify_token)
+  end
 end
